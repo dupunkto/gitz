@@ -1,0 +1,230 @@
+html {
+  font-family: sans-serif;
+  line-height: 1.15;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI symbol";
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff
+}
+
+a {
+  color: #0242f2;
+  text-decoration: underline;
+}
+
+a:hover {
+  color: #0056b3;
+  text-decoration: none;
+}
+
+.container {
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+@media(min-width: 576px) {
+  .container {
+    max-width: 540px
+  }
+}
+@media(min-width: 768px) {
+  .container {
+    max-width: 720px
+  }
+}
+@media(min-width: 992px) {
+  .container {
+    max-width: 960px
+  }
+}
+@media(min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+  }
+}
+
+h1 {
+  font-size: 2rem;
+  font-family: inherit;
+  font-weight: 300;
+  line-height: 1.5;
+  color: inherit;
+}
+
+h2 {
+  font-weight: 400;
+}
+
+header {
+  margin-top: 1.5rem;
+}
+
+header h1 {
+  display: inline;
+  margin: 0;
+  padding-right: 1rem;
+}
+
+header nav {
+  order: none;
+  flex-grow: 1;
+  display: inline-flex;
+  flex-wrap: nowrap;
+}
+
+header nav a {
+  align-self: flex-end;
+  margin-bottom: -1px;
+  padding: 0 1rem;
+  border-radius: 0;
+  border: none;
+  cursor: pointer;
+  color: #495057;
+  background-color: #fff;
+  border-color: #dee2e6 #dee2e6 #fff;
+  text-transform: lowercase;
+}
+
+header nav a,
+header nav a:hover {
+  text-decoration: none;
+}
+
+header h1 a {
+  text-decoration: none;
+}
+
+header h1 a:hover {
+  text-decoration: underline;
+}
+
+header nav a.selected, header nav a:hover {
+  color: #000;
+  background: #ddd;
+}
+
+.line {
+  margin-top: 0;
+  background: #ddd;
+}
+
+header .description span {
+  color: #666;
+  font-style: italic;
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: 7fr 3fr 5fr;
+  gap: 30px;
+}
+
+.summary section h2,
+.summary section h3 {
+  text-transform: lowercase;
+}
+
+.summary section h2 {
+  font-size: 1.3rem;
+  border-bottom: 1px solid #e9ecef;
+  padding-bottom: .25rem;
+}
+
+.summary section h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.summary section p {
+  margin-top: 0;
+}
+
+.summary .logs h2 {
+  margin-bottom: 0;
+  border-bottom: none;
+}
+
+.summary .branches .head::after {
+  content: "HEAD";
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  background-color: #88ff88;
+  margin-left: 0.3rem;
+  padding: 0.2rem 0.4rem;
+}
+
+.summary .branches a::after {
+  content: " \0025B8";
+  font-size: 1.2rem;
+}
+
+.summary .logs ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.summary .logs ul li {
+  background: #f8f9fa;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  padding: 0.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.summary .logs .message::before {
+  content: " — ";
+}
+
+.summary .logs .dt {
+  color: gray;
+  font-size: 0.6rem;
+  float: right;
+  padding-left: 0.5rem;
+}
+
+.not-found {
+  height: 60vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.epic {
+  padding-top: 24px;
+  margin-top: 0;
+  background: #cecece;
+  color: #f6f6f6;
+  border-bottom: 20px solid #131313;
+}
+
+.epic h1 {
+  background: #131313;
+  padding: 0 20px;
+  margin-bottom: -12px;
+}
+
+.listing {
+  gap: 90px;  
+}
+
+.listing ul {
+  list-style: none;
+  padding: 0;
+}

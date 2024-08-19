@@ -1,0 +1,6 @@
+{
+    "require": {
+        "czproject/git-php": "^4.3",
+        "erusev/parsedown": "^1.7"
+    }
+}
