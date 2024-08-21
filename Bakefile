@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 
 PORT=4000
-ENTRYPOINT="dev.php"
+ENTRYPOINT=dev.php
+REMOTE=s11
+DOMAIN=git.geheimesite.nl
+
+DEPLOY="rsync -ciavuP --delete --exclude .git"
 
 # Configure the PHP server to start two
 # concurrent threads.
@@ -9,4 +13,8 @@ export PHP_CLI_SERVER_WORKERS=2
 
 serve() {
   php -S 0.0.0.0:$PORT $ENTRYPOINT
+}
+
+deploy() {
+  $DEPLOY . $REMOTE:domains/$DOMAIN/public_html
 }
