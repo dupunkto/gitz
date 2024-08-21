@@ -9,11 +9,15 @@ $pattern = '^/~?([a-zA-Z0-9_\-\.]+)/([a-zA-Z0-9_\-\.]+)';
 
 switch(true) {
   case $path == "/":
-    $page = "listing";
+    $page ??= "listing";
     break;
 
+  case route("@{$pattern}.git/(.*)@"):
+    $page ??= "dumb";
+    $query = $params[3];
+
   case route("@{$pattern}$@"):
-    $page = "summary";
+    $page ??= "summary";
 
     $namespace = $params[1];
     $repo_name = $params[2];
@@ -31,6 +35,8 @@ switch(true) {
 
     break;
 }
+
+if($page == "dumb") \core\handleDumbClone($repo, $query);
 
 ?>
 <!DOCTYPE html>

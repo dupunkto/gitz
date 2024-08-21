@@ -1,6 +1,17 @@
 <?php
 // My own lil' standard library :)
 
+function validate_path($root, $path) {
+  if(realpath($root) != $root) return false;
+  $path = realpath($path);
+
+  if(str_starts_with($path, $root)) {
+    return $path;
+  } else {
+    return false;
+  }
+}
+
 function ensure_suffix($str, $suffix) {
   return str_ends_with($str, $suffix) ? $str : $str . $suffix;
 }

@@ -7,6 +7,26 @@ require_once __DIR__ . "/router.php";
 require_once __DIR__ . "/dates.php";
 require_once __DIR__ . "/utils.php";
 
+function handleDumbClone($repo, $query) {
+  $repo_path = $repo->getRepositoryPath();
+  $query_path = path_join($repo_path, $query);
+  $request_path = validate_path($repo_path, $query_path);
+
+  if($request_path == false) {
+    http_response_code(403);
+    exit;
+  }
+
+  if(!is_file($request_path)) {
+    http_response_code(404);
+    exit;
+  }
+
+  header('Content-Type: application/octet-stream');
+  readfile($request_path);
+  exit;
+}
+
 function listRepositories($namespace) {
   $repositories = [];
   $scan_path = path_join(SCAN_PATH, $namespace);
