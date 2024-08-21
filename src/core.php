@@ -26,7 +26,7 @@ function listRepositories($namespace) {
 }
 
 function repoExists($path) {
-  return file_exists(dbg(path_join($path, 'git-daemon-export-ok')));
+  return file_exists(path_join($path, 'git-daemon-export-ok'));
 }
 
 function listRemotes($repo) {
