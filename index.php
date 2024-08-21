@@ -20,7 +20,7 @@ switch(true) {
 
     $repo_path = path_join(SCAN_PATH, $namespace, $repo_name);
 
-    if(in_array($namespace, NAMESPACES) and file_exists($repo_path)) {
+    if(in_array($namespace, NAMESPACES) and \core\repoExists($repo_path)) {
       $repo = $git->open($repo_path);
       break;
     }

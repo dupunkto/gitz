@@ -17,12 +17,16 @@ function listRepositories($namespace) {
     if (in_array($child, [".", ".."])) continue;
 
     $path = path_join($scan_path, $child);
-    if (file_exists($path . '/HEAD') and file_exists($path . '/config')) {
+    if (repoExists($path)) {
       $repositories[] = $child;
     }
   }
 
   return $repositories;
+}
+
+function repoExists($path) {
+  return file_exists(dbg(path_join($path, 'git-daemon-export-ok')));
 }
 
 function listRemotes($repo) {
@@ -56,7 +60,7 @@ define('DEFAULT_DESCRIPTION', "Unnamed repository; edit this file 'description' 
 
 function getDescription($repo) {
   $path = $repo->getRepositoryPath() . DIRECTORY_SEPARATOR . "description";
-  $description = @file_get_contents($path);
+  $description = rtrim(@file_get_contents($path));
 
   if($description and $description != DEFAULT_DESCRIPTION) {
     return ensure_suffix(htmlspecialchars($description), ".");
