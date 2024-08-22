@@ -9,6 +9,6 @@
     </nav>
   </div>
   <div class="line">
-    <p class="container description"><?= \core\getDescription($repo) ?></p>
+    <p class="container description"><?= \core\getDescription($namespace, $repo_name) ?></p>
   </div>
 </header>

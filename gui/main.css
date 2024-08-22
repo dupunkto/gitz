@@ -209,22 +209,43 @@ header .description span {
 .epic {
   padding-top: 24px;
   margin-top: 0;
-  background: #cecece;
-  color: #f6f6f6;
-  border-bottom: 20px solid #131313;
+  border-bottom: 20px solid #ddd;
 }
 
 .epic h1 {
-  background: #131313;
+  background: #ddd;
   padding: 0 20px;
   margin-bottom: -12px;
 }
 
 .listing {
-  gap: 90px;  
+  gap: 1.5em;
 }
 
 .listing ul {
   list-style: none;
   padding: 0;
+}
+
+.listing section {
+  width: 20vw;
+}
+
+.listing li {
+  background: #f8f9fa;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  padding: 0.5rem;
+  margin-bottom: 0.3rem;
+  width: 100%;
+}
+
+.listing li a {
+  color: currentColor;
+  text-decoration: none;
+}
+
+.listing h3,
+.listing p {
+  margin: 0;
 }

@@ -11,7 +11,10 @@
         
         <ul>
           <?php foreach(\core\listRepositories($namespace) as $repo): ?>
-            <li><a href="/<?= $namespace ?>/<?= $repo ?>"><?= $repo ?></a></li>
+            <li><a href="/~<?= $namespace ?>/<?= $repo ?>">
+              <h3><?= $repo ?></h3>
+              <p><?= \core\getDescription($namespace, $repo) ?></p>
+            </a></li>
           <?php endforeach; ?>
         </ul>
       </section>

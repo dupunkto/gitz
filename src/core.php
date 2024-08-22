@@ -78,8 +78,8 @@ function lookupRemoteDomain($remote) {
 
 define('DEFAULT_DESCRIPTION', "Unnamed repository; edit this file 'description' to name the repository.\n");
 
-function getDescription($repo) {
-  $path = $repo->getRepositoryPath() . DIRECTORY_SEPARATOR . "description";
+function getDescription($namespace, $repo_name) {
+  $path = path_join(SCAN_PATH, $namespace, $repo_name, "description");
   $description = rtrim(@file_get_contents($path));
 
   if($description and $description != DEFAULT_DESCRIPTION) {

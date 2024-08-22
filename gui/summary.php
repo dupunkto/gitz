@@ -34,7 +34,7 @@
 
     <h3>Read-only</h3>
     <p><a href="//git.dupunkto.org/~<?= $namespace ?>/<?= $repo_name ?>">
-      https://git.dupunkto.org/~<?= $namespace ?>/<?= $repo_name ?>
+      https://git.dupunkto.org/~<?= $namespace ?>/<?= $repo_name ?>.git
     </a></p>
 
     <h3>Read/write</h3>
