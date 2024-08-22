@@ -10,22 +10,23 @@ html {
 }
 
 body {
-  margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI symbol";
+  color-scheme: light dark;
+  background-color: light-dark(#fff, #212529);
+  color: light-dark(#212529, #f8f9fa);
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
-  color: #212529;
-  background-color: #fff
+  margin: 0;
 }
 
 a {
-  color: #0242f2;
+  color: light-dark(#0242f2, #3395ff);
   text-decoration: underline;
 }
 
 a:hover {
-  color: #0056b3;
+  color: light-dark(#0056b3, #3395ff);
   text-decoration: none;
 }
 
@@ -92,10 +93,11 @@ header nav a {
   border-radius: 0;
   border: none;
   cursor: pointer;
-  color: #495057;
-  background-color: #fff;
-  border-color: #dee2e6 #dee2e6 #fff;
+  color: light-dark(#495057, #ced4da);
+  border-color: light-dark(#dee2e6, #131618) light-dark(#dee2e6, #131618) light-dark(#fff, #000);
   text-transform: lowercase;
+  line-height: 17px;
+  padding-bottom: 3px;
 }
 
 header nav a,
@@ -112,13 +114,13 @@ header h1 a:hover {
 }
 
 header nav a.selected, header nav a:hover {
-  color: #000;
-  background: #ddd;
+  color: light-dark(#000, #fff);
+  background: light-dark(#ddd, #131618);
 }
 
 .line {
   margin-top: 0;
-  background: #ddd;
+  background: light-dark(#ddd, #131618);
   padding: 0.1em 0;
 }
 
@@ -140,7 +142,7 @@ header .description span {
 
 .summary section h2 {
   font-size: 1.3rem;
-  border-bottom: 1px solid #e9ecef;
+  border-bottom: 1px solid light-dark(#e9ecef, #495057);
   padding-bottom: .25rem;
 }
 
@@ -163,6 +165,7 @@ header .description span {
   content: "HEAD";
   font-size: 0.7rem;
   text-transform: uppercase;
+  color: black;
   background-color: #88ff88;
   margin-left: 0.3rem;
   padding: 0.2rem 0.4rem;
@@ -180,7 +183,7 @@ header .description span {
 }
 
 .summary .logs ul li {
-  background: #f8f9fa;
+  background: light-dark(#f8f9fa, #131618);
   text-overflow: ellipsis;
   overflow: hidden;
   padding: 0.5rem;
@@ -205,11 +208,11 @@ header .description span {
 
 .readme pre {
   max-width: 100%;
-  background: #e9ecef;
+  background: light-dark(#e9ecef, #131618);
   padding: .25rem;
   display: block;
   font-size: 87.5%;
-  color: #212529;
+  color: light-dark(#212529, #fff);
   overflow: auto;
 }
 
@@ -225,17 +228,18 @@ header .description span {
 .epic {
   padding-top: 38px;
   margin-top: 0;
-  border-bottom: 27px solid #ddd;
+  border-bottom: 27px solid light-dark(#ddd, #131618);;
 }
 
 .epic h1 {
-  background: #ddd;
+  background: light-dark(#ddd, #131618);
   padding: 0 20px;
   margin-bottom: -14px;
 }
 
 .listing {
   gap: 1.5em;
+  align-items: flex-start;
 }
 
 .listing h2 {
@@ -249,11 +253,13 @@ header .description span {
 }
 
 .listing section {
-  width: 350px;
+  flex: 1 1 350px;
+  max-width: 100%;
+  min-width: 350px;
 }
 
 .listing li {
-  background: #f8f9fa;
+  background: light-dark(#f8f9fa, #131618);
   text-overflow: ellipsis;
   overflow: hidden;
   padding: 0.5rem;
