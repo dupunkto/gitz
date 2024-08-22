@@ -119,6 +119,7 @@ header nav a.selected, header nav a:hover {
 .line {
   margin-top: 0;
   background: #ddd;
+  padding: 0.1em 0;
 }
 
 header .description span {
@@ -197,6 +198,21 @@ header .description span {
   padding-left: 0.5rem;
 }
 
+.readme {
+  max-width: 770px;
+  width: 100%;
+}
+
+.readme pre {
+  max-width: 100%;
+  background: #e9ecef;
+  padding: .25rem;
+  display: block;
+  font-size: 87.5%;
+  color: #212529;
+  overflow: auto;
+}
+
 .not-found {
   height: 60vh;
   width: 100%;
@@ -207,28 +223,33 @@ header .description span {
 }
 
 .epic {
-  padding-top: 24px;
+  padding-top: 38px;
   margin-top: 0;
-  border-bottom: 20px solid #ddd;
+  border-bottom: 27px solid #ddd;
 }
 
 .epic h1 {
   background: #ddd;
   padding: 0 20px;
-  margin-bottom: -12px;
+  margin-bottom: -14px;
 }
 
 .listing {
   gap: 1.5em;
 }
 
+.listing h2 {
+  margin-bottom: 0.4em;
+}
+
 .listing ul {
   list-style: none;
   padding: 0;
+  margin-top: 0;
 }
 
 .listing section {
-  width: 20vw;
+  width: 350px;
 }
 
 .listing li {
@@ -248,4 +269,5 @@ header .description span {
 .listing h3,
 .listing p {
   margin: 0;
+  font-size: 1em;
 }
