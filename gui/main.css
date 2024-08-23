@@ -20,12 +20,12 @@ body {
   margin: 0;
 }
 
-a {
+a, .listing summary {
   color: light-dark(#0242f2, #3395ff);
   text-decoration: underline;
 }
 
-a:hover {
+a:hover, .listing summary:hover {
   color: light-dark(#0056b3, #3395ff);
   text-decoration: none;
 }
@@ -249,17 +249,31 @@ header .description span {
 .listing ul {
   list-style: none;
   padding: 0;
-  margin-top: 0;
+  margin: 0;
 }
 
 .listing section {
-  flex: 1 1 350px;
-  max-width: 100%;
-  min-width: 350px;
+  width: 100%;
 }
 
-.listing li {
+@media (min-width: 768px) {
+  .listing section {
+    width: calc(50% - 1.5em);
+    float: left;
+  }
+}
+
+@media (min-width: 1200px) {
+  .listing section {
+    width: calc(100% / 3 - 1.5em);
+  }
+}
+
+.listing a {
+  display: block;
   background: light-dark(#f8f9fa, #131618);
+  color: currentColor;
+  text-decoration: none;
   text-overflow: ellipsis;
   overflow: hidden;
   padding: 0.5rem;
@@ -267,13 +281,35 @@ header .description span {
   width: 100%;
 }
 
-.listing li a {
-  color: currentColor;
-  text-decoration: none;
-}
-
 .listing h3,
 .listing p {
   margin: 0;
   font-size: 1em;
+}
+
+.listing summary {
+  list-style: none;
+  text-transform: lowercase;
+  cursor: pointer;
+  display: inline;
+}
+
+.listing summary {
+  text-decoration: none;
+}
+
+.listing summary:hover {
+  text-decoration: underline;
+}
+
+.listing details[open] summary {
+  display: none;
+}
+
+.listing summary::before { content: "[ "; color: white; }
+.listing summary::after { content: " ]"; color: white; }
+
+.listing summary::marker,
+.listing summary::-webkit-details-marker {
+  display: none;
 }

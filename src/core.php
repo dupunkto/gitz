@@ -27,7 +27,7 @@ function handleDumbClone($repo, $query) {
   exit;
 }
 
-function listRepositories($namespace) {
+function listRepositories($git, $namespace) {
   $repositories = [];
   $scan_path = path_join(SCAN_PATH, $namespace);
 
@@ -38,11 +38,28 @@ function listRepositories($namespace) {
 
     $path = path_join($scan_path, $child);
     if (repoExists($path)) {
-      $repositories[] = $child;
+      $repo = $git->open($path);
+
+      if(HOUSEKEEPING) {
+        $repo->execute('gc', '--auto');
+        $repo->execute('update-server-info');
+      }
+
+      $commits = $repo->execute('log', '--reverse', '--format=%cI');
+      $created = strtotime(@$commits[0]);
+
+      $repositories[] = [
+        'name' => $child,
+        'created' => $created,
+      ];
     }
   }
 
-  return $repositories;
+  usort($repositories, function($a, $b) {
+    return $b['created'] - $a['created'];
+  });
+
+  return array_map(fn($repo) => $repo['name'], $repositories);
 }
 
 function repoExists($path) {
