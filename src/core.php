@@ -143,16 +143,30 @@ function isHEAD($repo, $branch) {
   return $branch == $repo->getCurrentBranchName();
 }
 
-function getParent($repo, $commit) {
-  return strtok(@rtrim($repo->execute('log', '-1', $commit->getId(), '--format=%P')[0]), " ");
+function getLatestCommits($repo) {
+  $collected = [];
+  $commits = $repo->execute('log', '-n' . MAX_COMMITS, '--pretty=format:%H|%cd|%s', '--date=iso-strict');
+
+  foreach ($commits as $line) {
+    list($hash, $datetime, $subject) = explode('|', $line, limit: 3);
+    $datetime = \DateTimeImmutable::createFromFormat(\DateTime::ATOM, (string)$datetime);
+
+    $collected[] = [
+      'hash' => $hash,
+      'subject' => $subject,
+      'datetime' => $datetime,
+    ];
+  }
+
+  return $collected;
 }
 
-function getShortHash($commit) {
-  return substr($commit->getId(), 0, 7);
+function getParent($repo, $hash) {
+  return strtok(@rtrim($repo->execute('log', '-1', $hash, '--format=%P')[0]), " ");
 }
 
-function getRelativeDate($commit) {
-  return \dates\timeAgo($commit->getDate());
+function toShortHash($hash) {
+  return substr($hash, 0, 7);
 }
 
 function getREADME($repo) {

@@ -4,8 +4,8 @@
   </div>
 </header>
 
-<? $total_repos = 0 ?>
-<? $total_size = 0 ?>
+<?php $total_repos = 0 ?>
+<?php $total_size = 0 ?>
 
 <!-- I'm not proud of this mess..., but it works :D -->
 <main class="container listing">
@@ -27,14 +27,14 @@
             $count++;
           ?>
 
-          <?php if($count == MAX + 1) echo "</ul><details><summary>More</summary>" ?>
+          <?php if($count == MAX_REPOS + 1) echo "</ul><details><summary>More</summary>" ?>
 
-          <?php if($count <= MAX) echo "<li>" ?>
+          <?php if($count <= MAX_REPOS) echo "<li>" ?>
             <a href="/~<?= $namespace ?>/<?= $repo_name ?>">
               <h3><?= $repo_name ?></h3>
               <p><?= \core\getDescription($repo) ?></p>
             </a>
-          <?php if($count <= MAX) echo "</li>" ?>
+          <?php if($count <= MAX_REPOS) echo "</li>" ?>
         <?php endforeach; ?>
       </details>
     </section>

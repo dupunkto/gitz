@@ -1,22 +1,15 @@
 <aside class="container summary">
   <section class="logs">
     <h2>Logs <small><?= \core\getTotalCommits($repo) ?> commits</small></h2>
-
-    <?php $commitId = $repo->getLastCommitId() ?>
     
     <ul>
-      <?php for($i = 0; $i < 5; $i++): ?>
-        <?php $commit = $repo->getCommit($commitId) ?>
-        <?php $commitId = \core\getParent($repo, $commit) ?>
-    
+      <?php foreach(\core\getLatestCommits($repo) as $commit): ?>    
         <li>
-          <time class="dt"><?= \core\getRelativeDate($commit) ?></time>
-          <a class="rev" href="#"><code><?= \core\getShortHash($commit) ?></code></a>
-          <span class="message"><?= $commit->getSubject() ?></span>
+          <time class="dt"><?= \dates\timeAgo($commit['datetime']) ?></time>
+          <a class="rev" href="#"><code><?= \core\toShortHash($commit['hash']) ?></code></a>
+          <span class="message"><?= $commit['subject'] ?></span>
         </li>
-
-        <?php if(!$commitId) break ?>
-      <?php endfor; ?>
+      <?php endforeach; ?>
     </ul>
   </section>
   <section class="branches">
