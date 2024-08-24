@@ -93,10 +93,43 @@ function lookupRemoteDomain($remote) {
   };
 }
 
+function getTotalCommits($repo) {
+  $count = $repo->execute('rev-list', '--count', 'HEAD');
+  return (!empty($count) && isset($count[0])) ? (int)$count[0] : 0;
+}
+
+function getTotalSize($repo) {
+  $total = 0;
+  $sizes = $repo->execute('count-objects', '-v');
+
+  foreach ($sizes as $statistic) {
+      if (preg_match('/size(?:-pack)?:\s+(\d+)/i', $statistic, $matches)) {
+          $total += (int)$matches[1];
+      }
+  }
+
+  // Git returns sizes in kB, but this function returns
+  // in bytes for consistency with the rest of these APIs.
+  return $total * 1024;
+}
+
+function formatTotalSize($repo) {
+  return formatSize(getTotalSize($repo));
+}
+
+function formatSize($bytes) {
+  $sizes = ['B', 'k', 'M', 'G', 'T'];
+  $factor = floor((strlen($bytes) - 1) / 3);
+  $size = $bytes / pow(1024, $factor);
+
+  $format = (floor($size) == $size) ? "%d%s" : "%.1f%s";
+  return sprintf($format, $size, $sizes[$factor]);
+}
+
 define('DEFAULT_DESCRIPTION', "Unnamed repository; edit this file 'description' to name the repository.\n");
 
-function getDescription($namespace, $repo_name) {
-  $path = path_join(SCAN_PATH, $namespace, $repo_name, "description");
+function getDescription($repo) {
+  $path = $repo->getRepositoryPath() . "/description";
   $description = rtrim(@file_get_contents($path));
 
   if($description and $description != DEFAULT_DESCRIPTION) {

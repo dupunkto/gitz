@@ -1,6 +1,6 @@
 <aside class="container summary">
   <section class="logs">
-    <h2>Logs</h2>
+    <h2>Logs <small><?= \core\getTotalCommits($repo) ?> commits</small></h2>
 
     <?php $commitId = $repo->getLastCommitId() ?>
     
@@ -30,7 +30,7 @@
     <?php endforeach; ?>
   </section>
   <section class="clone">
-    <h2>Clone</h2>
+    <h2>Clone <small><?= \core\formatTotalSize($repo) ?></small></h2>
 
     <h3>Read-only</h3>
     <p><a href="//git.dupunkto.org/~<?= $namespace ?>/<?= $repo_name ?>">

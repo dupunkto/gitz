@@ -144,6 +144,14 @@ header .description span {
   font-size: 1.3rem;
   border-bottom: 1px solid light-dark(#e9ecef, #495057);
   padding-bottom: .25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.summary section h2 small {
+  font-size: .7em;
+  text-transform: none;
 }
 
 .summary section h3 {
@@ -214,6 +222,10 @@ header .description span {
   font-size: 87.5%;
   color: light-dark(#212529, #fff);
   overflow: auto;
+}
+
+.readme img {
+  max-width: 100%;
 }
 
 .not-found {
@@ -306,10 +318,19 @@ header .description span {
   display: none;
 }
 
-.listing summary::before { content: "[ "; color: white; }
-.listing summary::after { content: " ]"; color: white; }
+.listing summary::before { content: "[ "; color: light-dark(#000, #fff); }
+.listing summary::after { content: " ]"; color: light-dark(#000, #fff); }
 
 .listing summary::marker,
 .listing summary::-webkit-details-marker {
   display: none;
+}
+
+footer.container {
+  font-size: 0.8em;
+  color: gray;
+  margin: 1em auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
