@@ -3,7 +3,7 @@
 PORT=4000
 ENTRYPOINT=dev.php
 REMOTE=s11
-DOMAIN=git.geheimesite.nl
+DOMAIN=git.dupunkto.org
 
 DEPLOY="rsync -ciavuP --delete --exclude .git"
 
