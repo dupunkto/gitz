@@ -5,18 +5,21 @@ require_once __DIR__ . "/src/core.php";
 require_once __DIR__ . '/vendor/autoload.php';
 
 $git = new CzProject\GitPhp\Git;
-$pattern = '^/~?([a-zA-Z0-9_\-\.]+)/([a-zA-Z0-9_\-\.]+)';
+
+$alnum = '([a-zA-Z0-9_\-\.]+)';
+$ns_pattern = "^/~?{$alnum}";
+$repo_pattern = "{$ns_pattern}/{$alnum}";
 
 switch(true) {
   case $path == "/":
     $page ??= "listing";
     break;
 
-  case route("@{$pattern}.git/(.*)@"):
+  case route("@{$repo_pattern}.git/(.*)@"):
     $page ??= "dumb";
     $query = $params[3];
 
-  case route("@{$pattern}$@"):
+  case route("@{$repo_pattern}$@"):
     $page ??= "summary";
 
     $namespace = $params[1];
@@ -28,6 +31,11 @@ switch(true) {
       $repo = $git->open($repo_path);
       break;
     }
+
+  // Redirect bare namespaces to /
+  case route("@{$ns_pattern}/?$@"):
+    header("Location: /");
+    exit;
 
   default:
     http_response_code(404);
