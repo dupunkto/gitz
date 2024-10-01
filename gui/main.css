@@ -21,12 +21,14 @@ body {
 }
 
 a, .listing summary {
-  color: light-dark(#0242f2, #3395ff);
+  /* color: light-dark(#0242f2, #3395ff); */
+  color: light-dark(#6a17e1, #c197fc);
   text-decoration: underline;
 }
 
 a:hover, .listing summary:hover {
-  color: light-dark(#0056b3, #3395ff);
+  /* color: light-dark(#0056b3, #3395ff); */
+  color: light-dark(#7848ba, #b783ff);
   text-decoration: none;
 }
 

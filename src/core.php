@@ -48,7 +48,7 @@ function generateGraph($git, $year) {
   $width = 635;
   $height = 84;
   $rectSize = 10;
-  $baseColor = '#ff4d79';
+  $baseColor = '#7426e2';
 
   $colorScale = [
     "#F8F9FA",
