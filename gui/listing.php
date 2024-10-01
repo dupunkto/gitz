@@ -4,7 +4,12 @@
   </div>
 </header>
 
-<img src="/api/graph" width="100%" class="container" style="margin: 1em auto">
+<picture>
+  <source srcset="/api/graph?c=light" media="(prefers-color-scheme: light)"/>
+  <source srcset="/api/graph?c=dark" media="(prefers-color-scheme: dark)"/>
+
+  <img src="/api/graph" width="100%" class="container" style="margin: 1em auto">
+</picture>
 
 <?php $total_repos = 0 ?>
 <?php $total_size = 0 ?>

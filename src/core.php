@@ -50,18 +50,37 @@ function generateGraph($git, $year) {
   $rectSize = 10;
   $baseColor = '#7426e2';
 
-  $colorScale = [
-    "#F8F9FA",
-    lighten($baseColor, 0.75), 
-    lighten($baseColor, 0.6),
-    lighten($baseColor, 0.45),
-    lighten($baseColor, 0.3),
-    lighten($baseColor, 0.2),
-    lighten($baseColor, 0.15),
-    lighten($baseColor, 0.1),
-    lighten($baseColor, 0.05),
-    $baseColor,
-];
+  switch(@$_GET['c']) {
+    case 'dark':
+      $colorScale = [
+        "#131618",
+        darken($baseColor, 0.3),
+        darken($baseColor, 0.1),
+        $baseColor,
+        lighten($baseColor, 0.05),
+        lighten($baseColor, 0.1),
+        lighten($baseColor, 0.2),
+        lighten($baseColor, 0.3),
+        lighten($baseColor, 0.35),
+        lighten($baseColor, 0.4),
+      ];
+      break;
+
+    default:
+      $colorScale = [
+        "#f8f9fa",
+        lighten($baseColor, 0.75), 
+        lighten($baseColor, 0.6),
+        lighten($baseColor, 0.45),
+        lighten($baseColor, 0.3),
+        lighten($baseColor, 0.2),
+        lighten($baseColor, 0.15),
+        lighten($baseColor, 0.1),
+        lighten($baseColor, 0.05),
+        $baseColor,
+      ];
+      break;
+  }
 
   $svg = '<?xml version="1.0" standalone="no"?>';
   $svg .= '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="' . $width . '" height="' . $height . '">';
