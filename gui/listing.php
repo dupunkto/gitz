@@ -4,6 +4,8 @@
   </div>
 </header>
 
+<img src="/api/graph" width="100%" class="container" style="margin: 1em auto">
+
 <?php $total_repos = 0 ?>
 <?php $total_size = 0 ?>
 
