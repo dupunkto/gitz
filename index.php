@@ -15,6 +15,18 @@ switch(true) {
     $page ??= "listing";
     break;
 
+  case route("@/api/graph/?(\d{4})?@"):
+    header('Content-Type: image/svg+xml');
+    header('Cache-Control: max-age=86400');
+    echo \core\generateGraph($git, $params[1] ?? date("Y"));
+
+    exit;
+
+  // Redirect bare namespaces to /
+  case route("@{$ns_pattern}/?$@"):
+    header("Location: /");
+    exit;
+
   case route("@{$repo_pattern}.git/(.*)@"):
     $page ??= "dumb";
     $query = $params[3];
@@ -27,24 +39,20 @@ switch(true) {
 
     $repo_path = path_join(SCAN_PATH, $namespace, $repo_name);
 
+    // If the repo does not exist, fall through to 404.
     if(in_array($namespace, NAMESPACES) and \core\repoExists($repo_path)) {
       $repo = $git->open($repo_path);
       break;
     }
 
-  // Redirect bare namespaces to /
-  case route("@{$ns_pattern}/?$@"):
-    header("Location: /");
-    exit;
-
   default:
     http_response_code(404);
     $page = "404";
-
     break;
 }
 
-if($page == "dumb") \core\handleDumbClone($repo, $query);
+if($page == "dumb") 
+  \core\handleDumbClone($repo, $query);
 
 ?>
 <!DOCTYPE html>

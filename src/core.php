@@ -27,6 +27,84 @@ function handleDumbClone($repo, $query) {
   exit;
 }
 
+function generateGraph($git, $year) {
+  $start = strtotime("$year-01-01");
+  $end = strtotime("$year-12-31");
+  $heatmap = [];
+
+  foreach(listAllRepositories($git) as $path) {
+    $repo = $git->open($path);
+
+    $dates = $repo->execute('log', '--pretty=format:%cd', '--date=short');
+    $timestamps = array_map(fn($date) => strtotime($date), $dates);
+    $timestamps = array_filter($timestamps, fn($ts) => $ts >= $start && $ts <= $end);
+
+    foreach($timestamps as $ts) {
+      $day = date('Y-m-d', $ts);
+      @$heatmap[$day] ++;
+    }
+  }
+
+  $width = 635;
+  $height = 84;
+  $rectSize = 10;
+  $baseColor = '#ff4d79';
+
+  $colorScale = [
+    "#F8F9FA",
+    lighten($baseColor, 0.75), 
+    lighten($baseColor, 0.6),
+    lighten($baseColor, 0.45),
+    lighten($baseColor, 0.3),
+    lighten($baseColor, 0.2),
+    lighten($baseColor, 0.15),
+    lighten($baseColor, 0.1),
+    lighten($baseColor, 0.05),
+    $baseColor,
+];
+
+  $svg = '<?xml version="1.0" standalone="no"?>';
+  $svg .= '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="' . $width . '" height="' . $height . '">';
+
+  $x = 0;
+  $y = 0;
+  $today = $start;
+
+  while ($today <= $end) {
+    $date = date('Y-m-d', $today);
+    $count = isset($heatmap[$date]) ? min($heatmap[$date], 9) : 0;
+
+    $color = $colorScale[$count];
+    $svg .= '<rect style="fill:' . $color . ';shape-rendering:crispedges;" data-score="' . $count . '" data-date="' . $date . '" x="' . $x . '" y="' . $y . '" width="' . $rectSize . '" height="' . $rectSize . '"/>';
+
+    $y += $rectSize + 2;
+    if ($y >= $height) {
+        $y = 0;
+        $x += $rectSize + 2;
+    }
+
+    $today = strtotime("+1 day", $today);
+  }
+
+  $svg .= '</svg>';
+
+  return $svg;
+}
+
+function listAllRepositories($git) {
+  $repos = [];
+
+  foreach(NAMESPACES as $ns) {
+    $paths = array_map(fn($name) => 
+      path_join(SCAN_PATH, $ns, $name), 
+      listRepositories($git, $ns));
+
+    $repos = array_merge($repos, $paths);
+  }
+
+  return $repos;
+}
+
 function listRepositories($git, $namespace) {
   $repositories = [];
   $scan_path = path_join(SCAN_PATH, $namespace);
