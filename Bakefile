@@ -5,7 +5,7 @@ ENTRYPOINT=dev.php
 REMOTE=s11
 DOMAIN=git.dupunkto.org
 
-DEPLOY="rsync -ciavuP --delete --exclude .git"
+DEPLOY="$DEPLOY --exclude favicon.ico"
 
 # Configure the PHP server to start two
 # concurrent threads.
