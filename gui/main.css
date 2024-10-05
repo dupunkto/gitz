@@ -38,6 +38,12 @@ a:hover, .listing summary:hover {
   flex-wrap: wrap;
 }
 
+@media(max-width: 576px) {
+  .container {
+    padding: 0 10px;
+  }
+}
+
 @media(min-width: 576px) {
   .container {
     max-width: 540px
