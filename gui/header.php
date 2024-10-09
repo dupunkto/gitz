@@ -6,6 +6,9 @@
       <?php foreach(\core\listRemotes($repo) as $remote): ?>
         <a href="<?= \core\getRemoteURL($repo, $remote) ?>"><?= $remote ?></a>
       <?php endforeach; ?>
+      <?php if(has_tld($repo_name)): ?>
+        <a href="//<?= $repo_name ?>">Homepage</a>
+      <?php endif; ?>
     </nav>
   </div>
   <div class="line">

@@ -55,3 +55,9 @@ function darken($hex, $percent) {
 
   return sprintf("#%02x%02x%02x", $r, $g, $b);
 }
+
+function has_tld($str) {
+  $TLDs = [".nl", ".com", ".org", ".eu"];
+  $matches = array_filter($TLDs, fn ($tld) => str_ends_with($str, $tld));
+  return !empty($matches);
+}
