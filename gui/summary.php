@@ -7,7 +7,7 @@
         <li>
           <time class="dt"><?= \dates\timeAgo($commit['datetime']) ?></time>
           <a class="rev" href="#"><code><?= \core\toShortHash($commit['hash']) ?></code></a>
-          <span class="message"><?= $commit['subject'] ?></span>
+          <span class="message"><?= htmlspecialchars($commit['subject']) ?></span>
         </li>
       <?php endforeach; ?>
     </ul>
