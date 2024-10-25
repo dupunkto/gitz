@@ -48,9 +48,9 @@ function generateGraph($git, $year) {
   $width = 635;
   $height = 84;
   $rectSize = 10;
-  $baseColor = '#7426e2';
+  $baseColor = @$_GET['c'] ?? '#7426e2';
 
-  switch(@$_GET['c']) {
+  switch(@$_GET['m']) {
     case 'dark':
       $colorScale = [
         "#131618",
