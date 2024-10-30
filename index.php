@@ -18,7 +18,12 @@ switch(true) {
   case route("@/api/graph/?(\d{4})?@"):
     header('Content-Type: image/svg+xml');
     header('Cache-Control: max-age=86400');
-    echo \core\generateGraph($git, $params[1] ?? date("Y"));
+
+    $year = $params[1] ?? date("Y");
+    $color = @$_GET['c'] ?? '#7426e2';
+    $mode = @$_GET['m'] ?? 'light';
+
+    echo \core\generateGraph($git, $year, $color, $mode);
 
     exit;
 
