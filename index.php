@@ -20,7 +20,7 @@ switch(true) {
     header('Cache-Control: max-age=86400');
 
     $year = $params[1] ?? date("Y");
-    $color = @$_GET['c'] ?? '#7426e2';
+    $color = @$_GET['c'] ?? '7426e2';
     $mode = @$_GET['m'] ?? 'light';
 
     echo \core\generateGraph($git, $year, $color, $mode);

@@ -27,7 +27,7 @@ function handleDumbClone($repo, $query) {
   exit;
 }
 
-function generateGraph($git, $year, $baseColor, $mode) {
+function generateGraph($git, $year, $color, $mode) {
   $start = strtotime("$year-01-01");
   $end = strtotime("$year-12-31");
   $heatmap = [];
@@ -48,6 +48,7 @@ function generateGraph($git, $year, $baseColor, $mode) {
   $width = 635;
   $height = 84;
   $rectSize = 10;
+  $baseColor = "#" . $color;
 
   switch($mode) {
     case 'dark':
