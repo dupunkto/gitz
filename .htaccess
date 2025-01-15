@@ -14,3 +14,7 @@ RewriteRule ^$ cache.php [L,QSA]
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^ index.php [L,QSA]
+
+# Cool URLs don't change
+# (Specific to my instance, sorry for polluting the main source tree)
+Redirect /neopub/untitled /axcelott/untitled
