@@ -18,6 +18,17 @@ function route($pattern) {
   return preg_match($pattern, $path, $params);
 }
 
+function scope($pattern) {
+  global $path, $params;
+
+  if (preg_match($pattern, $path, $params)) {
+    $path = preg_replace($pattern, "", $path);
+    return true;
+  }
+
+  return false;
+}
+
 function is_builtin() {
   return php_sapi_name() == "cli-server";
 }

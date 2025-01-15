@@ -8,7 +8,16 @@ $git = new CzProject\GitPhp\Git;
 
 $alnum = '([a-zA-Z0-9_\-\.]+)';
 $ns_pattern = "^/~?{$alnum}";
-$repo_pattern = "{$ns_pattern}/{$alnum}";
+
+function mountRepo($namespace, $repo_name) {
+  global $git;
+
+  $repo_path = path_join(SCAN_PATH, $namespace, $repo_name);
+
+  if(!in_array($namespace, NAMESPACES)) return false;
+  if(!\core\repoExists($repo_path)) return false;
+  else return $git->open($repo_path);
+}
 
 switch(true) {
   case $path == "/":
@@ -24,7 +33,6 @@ switch(true) {
     $mode = @$_GET['m'] ?? 'light';
 
     echo \core\generateGraph($git, $year, $color, $mode);
-
     exit;
 
   // Redirect bare namespaces to /
@@ -32,22 +40,42 @@ switch(true) {
     header("Location: /");
     exit;
 
-  case route("@{$repo_pattern}.git/(.*)@"):
-    $page ??= "dumb";
-    $query = $params[3];
-
-  case route("@{$repo_pattern}$@"):
-    $page ??= "summary";
-
+  case scope("@{$ns_pattern}/{$alnum}.git/(.*)@"):
     $namespace = $params[1];
     $repo_name = $params[2];
 
-    $repo_path = path_join(SCAN_PATH, $namespace, $repo_name);
+    if($repo = mountRepo($namespace, $repo_name)) {
+      header('Content-Type: application/octet-stream');
+      $request_path = \core\resolveDumbClone($repo, $params[3]);
 
-    // If the repo does not exist, fall through to 404.
-    if(in_array($namespace, NAMESPACES) and \core\repoExists($repo_path)) {
-      $repo = $git->open($repo_path);
-      break;
+      match(true) {
+        $request_path == false => http_response_code(403),
+        !is_file($request_path) => http_response_code(404),
+        default => readfile($request_path),
+      };
+
+      exit;
+    }
+
+  case scope("@{$ns_pattern}/{$alnum}@"):
+    $namespace = $params[1];
+    $repo_name = $params[2];
+
+    $repo_url = "/~{$namespace}/{$repo_name}";
+
+    if($repo = mountRepo($namespace, $repo_name)) {
+      switch(true) {
+        case route("@^/?$@"):
+          $page ??= "summary";
+          break;
+  
+        case route("@/log/(.*)$@"):
+          $page ??= "log";
+          $branch = $params[1];
+          break;
+      }
+
+      if(isset($page)) break;
     }
 
   default:
@@ -55,9 +83,6 @@ switch(true) {
     $page = "404";
     break;
 }
-
-if($page == "dumb") 
-  \core\handleDumbClone($repo, $query);
 
 ?>
 <!DOCTYPE html>
@@ -69,7 +94,7 @@ if($page == "dumb")
     </style>
   </head>
   <body>
-    <?php if(isset($repo)) include __DIR__ . "/gui/header.php" ?>
-    <?php include __DIR__ . "/gui/$page.php" ?>
+    <?php if(isset($repo) && $repo != false) include __DIR__ . "/gui/header.php" ?>
+    <?php if(isset($page) && $page != false) include __DIR__ . "/gui/$page.php" ?>
   </body>
 </html>

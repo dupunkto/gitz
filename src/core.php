@@ -7,24 +7,11 @@ require_once __DIR__ . "/router.php";
 require_once __DIR__ . "/dates.php";
 require_once __DIR__ . "/utils.php";
 
-function handleDumbClone($repo, $query) {
+function resolveDumbClone($repo, $query) {
   $repo_path = $repo->getRepositoryPath();
   $query_path = path_join($repo_path, $query);
-  $request_path = validate_path($repo_path, $query_path);
-
-  if($request_path == false) {
-    http_response_code(403);
-    exit;
-  }
-
-  if(!is_file($request_path)) {
-    http_response_code(404);
-    exit;
-  }
-
-  header('Content-Type: application/octet-stream');
-  readfile($request_path);
-  exit;
+  
+  return validate_path($repo_path, $query_path);
 }
 
 function generateGraph($git, $year, $color, $mode) {
@@ -190,6 +177,10 @@ function lookupRemoteDomain($remote) {
   };
 }
 
+function getDefaultBranch($repo) {
+  return str_replace("refs/heads/", "", $repo->execute('symbolic-ref', 'HEAD')[0]);
+}
+
 function getTotalCommits($repo) {
   $count = $repo->execute('rev-list', '--count', 'HEAD');
   return (!empty($count) && isset($count[0])) ? (int)$count[0] : 0;
@@ -240,9 +231,18 @@ function isHEAD($repo, $branch) {
   return $branch == $repo->getCurrentBranchName();
 }
 
-function getLatestCommits($repo) {
+function getLatestCommits($repo, $branch = "HEAD") {
+  $commits = $repo->execute('log', '-n' . MAX_COMMITS, '--pretty=format:%H|%cd|%s', '--date=iso-strict', $branch);
+  return collectCommits($commits);
+}
+
+function getAllCommits($repo, $branch = "HEAD") {
+  $commits = $repo->execute('log', '--pretty=format:%H|%cd|%s', '--date=iso-strict', $branch);
+  return collectCommits($commits);
+}
+
+function collectCommits($commits) {
   $collected = [];
-  $commits = $repo->execute('log', '-n' . MAX_COMMITS, '--pretty=format:%H|%cd|%s', '--date=iso-strict');
 
   foreach ($commits as $line) {
     list($hash, $datetime, $subject) = explode('|', $line, limit: 3);
