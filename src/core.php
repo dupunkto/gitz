@@ -231,31 +231,40 @@ function isHEAD($repo, $branch) {
   return $branch == $repo->getCurrentBranchName();
 }
 
-function getLatestCommits($repo, $branch = "HEAD") {
-  $commits = $repo->execute('log', '-n' . MAX_COMMITS, '--pretty=format:%H|%cd|%s', '--date=iso-strict', $branch);
+define('COLLECT_FORMAT', ['--pretty=format:%H|%cd|%s|%an|%ae', '--date=iso-strict']);
+
+function getLatestCommits($repo, $branch = "HEAD", $n = MAX_COMMITS) {
+  $commits = $repo->execute('log', '-n' . $n , COLLECT_FORMAT , $branch);
   return collectCommits($commits);
 }
 
 function getAllCommits($repo, $branch = "HEAD") {
-  $commits = $repo->execute('log', '--pretty=format:%H|%cd|%s', '--date=iso-strict', $branch);
+  $commits = $repo->execute('log', COLLECT_FORMAT, $branch);
   return collectCommits($commits);
 }
 
 function collectCommits($commits) {
-  $collected = [];
+  return array_map(fn($line) => collectCommitData($line), $commits);
+}
 
-  foreach ($commits as $line) {
-    list($hash, $datetime, $subject) = explode('|', $line, limit: 3);
-    $datetime = \DateTimeImmutable::createFromFormat(\DateTime::ATOM, (string)$datetime);
+function getCommit($repo, $hash) {
+  $diff = $repo->execute('show', COLLECT_FORMAT, $hash);
+  $metadata = collectCommitData(array_shift($diff));
+  
+  return ['diff' => join("\n", $diff), ...$metadata];
+}
 
-    $collected[] = [
-      'hash' => $hash,
-      'subject' => $subject,
-      'datetime' => $datetime,
-    ];
-  }
+function collectCommitData($line) {
+  [$hash, $datetime, $subject, $author, $email] = explode('|', $line, limit: 5);
+  $datetime = \DateTimeImmutable::createFromFormat(\DateTime::ATOM, (string)$datetime);
 
-  return $collected;
+  return [
+    'hash' => $hash,
+    'subject' => $subject,
+    'author' => $author,
+    'email' => $email,
+    'datetime' => $datetime,
+  ];
 }
 
 function getParent($repo, $hash) {

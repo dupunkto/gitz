@@ -6,7 +6,9 @@
       <?php foreach(\core\getLatestCommits($repo) as $commit): ?>    
         <li>
           <time class="dt"><?= \dates\timeAgo($commit['datetime']) ?></time>
-          <a class="rev" href="#"><code><?= \core\toShortHash($commit['hash']) ?></code></a>
+          <a class="rev" href="<?= $repo_url ?>/commit/<?= $commit['hash'] ?>"><code
+            ><?= \core\toShortHash($commit['hash']) ?></code
+          ></a>
           <span class="message"><?= htmlspecialchars($commit['subject']) ?></span>
         </li>
       <?php endforeach; ?>

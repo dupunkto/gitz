@@ -73,6 +73,11 @@ switch(true) {
           $page ??= "log";
           $branch = $params[1];
           break;
+
+        case route("@/commit/(.*)$@"):
+          $page ??= "commit";
+          $hash = $params[1];
+          break;
       }
 
       if(isset($page)) break;

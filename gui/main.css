@@ -20,6 +20,16 @@ body {
   margin: 0;
 }
 
+hgroup h1,
+hgroup h2,
+hgroup h3 {
+  margin-bottom: 0;
+}
+
+hgroup p {
+  margin-top: 0;
+}
+
 a, .listing summary {
   /* color: light-dark(#0242f2, #3395ff); */
   color: light-dark(#6a17e1, #c197fc);
@@ -249,6 +259,10 @@ header .description span {
   color: gray;
   display: inline-block;
   width: 120px;
+}
+
+.commit-details {
+  flex-direction: column;
 }
 
 .readme {
