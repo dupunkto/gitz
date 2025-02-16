@@ -36,8 +36,8 @@
       default => $ext
     };
 
-    if(str_ends_with($ext, 'js')) $mime_type = 'text/javascript';
-    if(str_ends_with($ext, 'html')) $mime_type = 'text/html';
+    if(str_ends_with($ext, 'js')) $mode = 'text/javascript';
+    if(str_ends_with($ext, 'html')) $mode = 'text/html';
   }
 
   // For all other cases, let CodeMirror decide.
