@@ -23,10 +23,12 @@
   $mime = \core\getMimeType($repo, $request_path, $hash);
   
   // CodeMirror doesn't like text/x-shellscript :|
-  if($mime == 'text/x-shellscript') $mime = 'text/x-sh';
+  if($mime == 'text/x-shellscript') $mode = 'text/x-sh';
 
-  if($mime == 'application/octet-stream') {
-    $mime = match($ext) {
+  // If the file info is being useless, try to match using
+  // file extension data instead.
+  else if($mime == 'application/octet-stream') {
+    $mode = match($ext) {
       'png' => 'image/png',
       'webp' => 'image/webp',
       'jpg' => 'image/jpg',
@@ -35,17 +37,22 @@
     };
   }
 
-  // If the file info is being useless, try using the extension instead.
-  if($mime == 'text/plain') {
-    $mime = match($ext) {
+  // Again, if the file info is being useless, try using
+  // the extension :)
+  else if($mime == 'text/plain') {
+    $mode = match($ext) {
       'json' => 'application/json',
       'jsonld' => 'application/ld+json',
       'ts' => 'application/typescript',
       default => $ext
     };
 
-    if(str_ends_with($ext, 'js')) $mime = 'text/javascript';
-    if(str_ends_with($ext, 'html')) $mime = 'text/html';
+    if(str_ends_with($ext, 'js')) $mime_type = 'text/javascript';
+    if(str_ends_with($ext, 'html')) $mime_type = 'text/html';
+  }
+
+  else {
+    $mode = $mime;
   }
 ?>
 
@@ -56,12 +63,15 @@
     <pre class="code"><code><?= htmlspecialchars($blob) ?></code></pre>
 
     <script>
+      // Mime-Type: <?= $mime ?>
+      // Extension: <?= $ext ?>
+
       const codeElement = document.querySelector(".code");
       const containerElement = document.querySelector(".blob");
 
       CodeMirror(containerElement, {
         value: codeElement.innerText,
-        mode:  "<?= $mime ?>",
+        mode:  "<?= $mode ?>",
         indentUnit: 2,
         lineWrapping: false,
         lineNumbers: true,
