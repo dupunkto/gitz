@@ -261,7 +261,9 @@ header .description span {
   width: 120px;
 }
 
-.commit-details {
+.commit-details,
+.tree,
+.blob {
   flex-direction: column;
 }
 
@@ -380,6 +382,28 @@ header .description span {
 .listing summary::marker,
 .listing summary::-webkit-details-marker {
   display: none;
+}
+
+.commit-details:has(.message) hgroup p {
+  margin-bottom: 0;
+}
+
+.commit-details .message {
+  margin-bottom: 2em;
+}
+
+.tree ul {
+  padding: 0;
+  list-style: none;
+  font-family: monospace;
+}
+
+.tree li:nth-child(odd) {
+  background-color: rgba(0,0,0,5%);
+}
+
+.mode {
+  padding-right: 1em;
 }
 
 footer.container {

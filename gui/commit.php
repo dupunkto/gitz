@@ -29,15 +29,15 @@
     $object = $repo->getCommit($hash);
     $message = $object->getBody();
 
-    if($message) echo "<p>" . htmlspecialchars($message) . "</p>";
+    if($message) echo '<pre class="message">' . htmlspecialchars($message) . '</pre>';
   ?>
 
-  <pre><code><?= htmlspecialchars($commit['diff']) ?></code></pre>
+  <pre class="diff"><code><?= htmlspecialchars($commit['diff']) ?></code></pre>
 </div>
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const originElement = document.querySelector("pre");
+    const originElement = document.querySelector(".diff");
     const targetElement = document.createElement("div");
     const containerElement = document.querySelector(".commit-details");
 

@@ -186,6 +186,40 @@ function getTotalCommits($repo) {
   return (!empty($count) && isset($count[0])) ? (int)$count[0] : 0;
 }
 
+function getType($repo, $path, $hash) {
+  if(in_array($path, ["", "."])) return 'tree';
+  $output = $repo->execute('ls-tree', '-tr', $hash, $path);
+  
+  foreach($output as $line) {
+    [$mode, $type, $hash, $object] = preg_split('/\s+/', $line, 4);
+    if($object == $path) return $type;
+  }
+
+  return false;
+}
+
+function getTree($repo, $path, $hash) {
+  $output = $repo->execute('ls-tree', $hash, "./{$path}/");
+  $files = [];
+
+  foreach ($output as $line) {
+    [$mode, $type, $hash, $object] = preg_split('/\s+/', $line, 4);
+    $object = strip_prefix($object, "{$path}/");
+
+    $files[] = [
+      'mode' => $mode,
+      'type' => $type,
+      'path' => $object
+    ];
+  }
+
+  return $files;
+}
+
+function getBlob($repo, $path, $hash) {
+  return implode("\n", $repo->execute('show', "{$hash}:{$path}"));
+}
+
 function getTotalSize($repo) {
   $total = 0;
   $sizes = $repo->execute('count-objects', '-v');
@@ -281,4 +315,37 @@ function getREADME($repo) {
   } catch (\Throwable $e) {
     return false;
   } 
+}
+
+function fmtMode($mode) {
+  // Convert mode to octal if it's in hex
+  if (preg_match('/^[0-9a-fA-F]+$/', $mode)) {
+    $mode = octdec($mode);
+  }
+
+  $types = [
+    040000 => 'd', // Directory
+    100644 => '-', // Regular file (non-executable)
+    100755 => '-', // Regular file (executable)
+    120000 => 'l', // Symbolic link
+    160000 => 'c', // Git submodule (commit object)
+  ];
+
+  $t_char = $types[$mode & 0170000] ?? '-';
+
+  $perms = [
+    0400 => 'r', 0200 => 'w', 0100 => 'x',
+    0040 => 'r', 0020 => 'w', 0010 => 'x',
+    0004 => 'r', 0002 => 'w', 0001 => 'x',
+  ];
+
+  $p_str = '';
+
+  for ($i = 6; $i >= 0; $i -= 3) {
+    $p_str .= ($mode & (0400 >> $i)) ? 'r' : '-';
+    $p_str .= ($mode & (0200 >> $i)) ? 'w' : '-';
+    $p_str .= ($mode & (0100 >> $i)) ? 'x' : '-';
+  }
+
+  return $t_char . $p_str;
 }

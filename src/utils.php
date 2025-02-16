@@ -21,6 +21,18 @@ function dbg($thing) {
   return $thing;
 }
 
+function strip_prefix($str, $prefix) {
+  return replace_prefix($str, $prefix, "");
+}
+
+function replace_prefix($str, $old, $new) {
+  if(str_starts_with($str, $old)) {
+    return $new . substr($str, strlen($old));
+  } else {
+    return $str;
+  }
+}
+
 function path_join() {
   $paths = [];
   foreach (func_get_args() as $arg) {
@@ -28,6 +40,12 @@ function path_join() {
   }
 
   return preg_replace("#/+#", "/", join("/", $paths));
+}
+
+function path_parent($path) {
+  $last = strrpos($path, '/');
+  if ($last == false) return false;
+  return substr($path, 0, $last);
 }
 
 function lighten($hex, $percent) {

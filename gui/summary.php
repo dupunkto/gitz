@@ -21,7 +21,10 @@
       <h3 <?php if(\core\isHEAD($repo, $branch)) echo 'class="head"' ?>>
         <?= $branch ?>
       </h3>
-      <p><a href="">tree</a> <a href="<?= $repo_url ?>/log/<?= $branch ?>">log</a></p>
+      <p>
+        <a href="<?= $repo_url ?>/tree/<?= \core\getLatestCommits($repo, $branch, 1)[0]['hash'] ?>">tree</a>
+        <a href="<?= $repo_url ?>/log/<?= $branch ?>">log</a>
+      </p>
     <?php endforeach; ?>
   </section>
   <section class="clone">

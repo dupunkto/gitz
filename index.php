@@ -78,6 +78,18 @@ switch(true) {
           $page ??= "commit";
           $hash = $params[1];
           break;
+
+        case route("@/tree/{$alnum}(.*)$@"):
+          $page ??= "tree";
+          $hash = $params[1];
+          $request_path = trim($params[2], "/");
+          break;
+
+        case route("@/blob/{$alnum}(.*)$@"):
+          $page ??= "blob";
+          $hash = $params[1];
+          $request_path = trim($params[2], "/");
+          break;
       }
 
       if(isset($page)) break;
