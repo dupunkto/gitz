@@ -198,6 +198,16 @@ function getType($repo, $path, $hash) {
   return false;
 }
 
+function getMimeType($repo, $path, $hash) {
+  $finfo = new \finfo(FILEINFO_MIME_TYPE);
+
+  [$line] = $repo->execute('ls-tree', $hash, $path);
+  [$mode, $type, $hash, $object] = preg_split('/\s+/', $line, 4);
+
+  $binary = join('\n', $repo->execute('cat-file', '-p', $hash));
+  return $finfo->buffer($binary);
+}
+
 function getTree($repo, $path, $hash) {
   $output = $repo->execute('ls-tree', $hash, "./{$path}/");
   $files = [];
@@ -217,7 +227,7 @@ function getTree($repo, $path, $hash) {
 }
 
 function getBlob($repo, $path, $hash) {
-  return implode("\n", $repo->execute('show', "{$hash}:{$path}"));
+  return $repo->run('show', "{$hash}:{$path}")->getOutputAsString();
 }
 
 function getTotalSize($repo) {

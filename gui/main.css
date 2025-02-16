@@ -30,6 +30,10 @@ hgroup p {
   margin-top: 0;
 }
 
+img {
+  max-width: 100%;
+}
+
 a, .listing summary {
   /* color: light-dark(#0242f2, #3395ff); */
   color: light-dark(#6a17e1, #c197fc);
@@ -419,4 +423,11 @@ footer.container {
 
 .d2h-icon {
   display: none;
+}
+
+/* CodeMirror customizations */
+
+.CodeMirror {
+  height: auto !important;
+  max-width: 100%;
 }
