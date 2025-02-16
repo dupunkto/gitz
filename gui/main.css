@@ -390,3 +390,9 @@ footer.container {
   justify-content: space-between;
   align-items: center;
 }
+
+/* diff2html customizations */
+
+.d2h-icon {
+  display: none;
+}
