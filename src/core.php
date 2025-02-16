@@ -327,6 +327,10 @@ function getREADME($repo) {
   } 
 }
 
+function isCommitHash($hash) {
+  return preg_match('/^[0-9a-f]{40}$/i', $hash) === 1;
+}
+
 function fmtMode($mode) {
   $mod = str_pad(decoct(octdec($mode)), 6, '0', STR_PAD_LEFT);
 

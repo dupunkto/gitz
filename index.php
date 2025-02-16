@@ -81,7 +81,14 @@ switch(true) {
 
         case route("@/tree/{$alnum}(.*)$@"):
           $page ??= "tree";
-          $hash = $params[1];
+
+          if(\core\isCommitHash($params[1])) {
+            $hash = $params[1];
+          } else {
+            $branch = $params[1];
+            $hash = \core\getLatestCommits($repo, $branch, 1)[0]['hash'];
+          }
+
           $request_path = trim($params[2], "/");
           break;
 

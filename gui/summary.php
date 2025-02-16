@@ -22,7 +22,7 @@
         <?= $branch ?>
       </h3>
       <p>
-        <a href="<?= $repo_url ?>/tree/<?= \core\getLatestCommits($repo, $branch, 1)[0]['hash'] ?>">tree</a>
+        <a href="<?= $repo_url ?>/tree/<?= $branch ?>">tree</a>
         <a href="<?= $repo_url ?>/log/<?= $branch ?>">log</a>
       </p>
     <?php endforeach; ?>
