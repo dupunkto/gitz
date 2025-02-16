@@ -328,33 +328,23 @@ function getREADME($repo) {
 }
 
 function fmtMode($mode) {
-  // Convert mode to octal if it's in hex
-  if (preg_match('/^[0-9a-fA-F]+$/', $mode)) {
-    $mode = octdec($mode);
-  }
-
-  $types = [
-    040000 => 'd', // Directory
-    100644 => '-', // Regular file (non-executable)
-    100755 => '-', // Regular file (executable)
-    120000 => 'l', // Symbolic link
-    160000 => 'c', // Git submodule (commit object)
-  ];
-
-  $t_char = $types[$mode & 0170000] ?? '-';
-
-  $perms = [
-    0400 => 'r', 0200 => 'w', 0100 => 'x',
-    0040 => 'r', 0020 => 'w', 0010 => 'x',
-    0004 => 'r', 0002 => 'w', 0001 => 'x',
-  ];
+  $mod = str_pad(decoct(octdec($mode)), 6, '0', STR_PAD_LEFT);
 
   $p_str = '';
+  $t_char = '';
 
-  for ($i = 6; $i >= 0; $i -= 3) {
-    $p_str .= ($mode & (0400 >> $i)) ? 'r' : '-';
-    $p_str .= ($mode & (0200 >> $i)) ? 'w' : '-';
-    $p_str .= ($mode & (0100 >> $i)) ? 'x' : '-';
+  $t_char = match(substr($mod, 0, 2)) {
+    '10' => '-',      // Regular file
+    '04' => 'd',      // Directory
+    '12' => 'l',      // Symbolic link
+    default => '?',   // Unknown
+  };
+
+  foreach (str_split(substr($mod, -3)) as $digit) {
+    $digit = intval($digit);
+    $p_str .= ($digit & 4) ? 'r' : '-';
+    $p_str .= ($digit & 2) ? 'w' : '-';
+    $p_str .= ($digit & 1) ? 'x' : '-';
   }
 
   return $t_char . $p_str;
