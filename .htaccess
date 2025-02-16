@@ -1,5 +1,3 @@
-RewriteOptions Inherit
-
 # "Fix" for weird redirection caused by DirectAdmin
 # domain pointer redirects. I cannot be bothered to
 # properly fix it, so this'll have to do.
