@@ -79,3 +79,9 @@ function has_tld($str) {
   $matches = array_filter($TLDs, fn ($tld) => str_ends_with($str, $tld));
   return !empty($matches);
 }
+
+function is_absolute($url) {
+  return str_starts_with($url, "http://") 
+    || str_starts_with($url, "https://")
+    || str_starts_with($url, "//");
+}

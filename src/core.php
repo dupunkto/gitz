@@ -177,6 +177,10 @@ function lookupRemoteDomain($remote) {
   };
 }
 
+function getLatestHash($repo, $branch) {
+  return getLatestCommits($repo, $branch, 1)[0]['hash'];
+}
+
 function getDefaultBranch($repo) {
   return str_replace("refs/heads/", "", $repo->execute('symbolic-ref', 'HEAD')[0]);
 }
@@ -198,7 +202,7 @@ function getType($repo, $path, $hash) {
   return false;
 }
 
-function getMimeType($repo, $path, $hash) {
+function detectMimeType($repo, $path, $hash) {
   $finfo = new \finfo(FILEINFO_MIME_TYPE);
 
   [$line] = $repo->execute('ls-tree', $hash, $path);

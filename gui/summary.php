@@ -45,10 +45,12 @@
 <main class="container">
   <article class="readme">
     <?php
-      $markdown = \core\getREADME($repo);
-      $parser = new Parsedown();
+      $blob = \core\getREADME($repo);
+      $hash = \core\getLatestHash($repo, $branch);
 
-      echo $parser->text($markdown);
+      $parser = new Sitdown($repo, $hash, '/');
+
+      echo $parser->text($blob);
     ?>
   </article>
 </main>

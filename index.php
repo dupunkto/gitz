@@ -3,6 +3,7 @@
 
 require_once __DIR__ . "/src/core.php";
 require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . "/ext/sitdown.php";
 
 $git = new CzProject\GitPhp\Git;
 
@@ -82,12 +83,8 @@ switch(true) {
         case route("@/tree/{$alnum}(.*)$@"):
           $page ??= "tree";
 
-          if(\core\isCommitHash($params[1])) {
-            $hash = $params[1];
-          } else {
-            $branch = $params[1];
-            $hash = \core\getLatestCommits($repo, $branch, 1)[0]['hash'];
-          }
+          if(\core\isCommitHash($params[1])) $hash = $params[1];
+          else $hash = \core\getLatestHash($repo, $params[1]);
 
           $request_path = trim($params[2], "/");
           break;
@@ -95,32 +92,11 @@ switch(true) {
         case route("@/blob/{$alnum}(.*)$@"):
           $page ??= "blob";
 
-          if(\core\isCommitHash($params[1])) {
-            $hash = $params[1];
-          } else {
-            $branch = $params[1];
-            $hash = \core\getLatestCommits($repo, $branch, 1)[0]['hash'];
-          }
+          if(\core\isCommitHash($params[1])) $hash = $params[1];
+          else $hash = \core\getLatestHash($repo, $params[1]);
 
           $request_path = trim($params[2], "/");
           break;
-
-        case route("@/raw/{$alnum}(.*)$@"):
-          if(\core\isCommitHash($params[1])) {
-            $hash = $params[1];
-          } else {
-            $branch = $params[1];
-            $hash = \core\getLatestCommits($repo, $branch, 1)[0]['hash'];
-          }
-
-          $request_path = trim($params[2], "/");
-
-          $blob = \core\getBlob($repo, $request_path, $hash);
-          $mime = \core\detectMimeType($repo, $request_path, $hash);
-
-          header("Content-Type: {$mime}");
-          echo $blob;
-          exit;
       }
 
       if(isset($page)) break;

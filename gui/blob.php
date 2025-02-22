@@ -20,28 +20,7 @@
 <?php
   $blob = \core\getBlob($repo, $request_path, $hash);
   $ext = pathinfo($request_path, PATHINFO_EXTENSION);
-  $mime = \core\getMimeType($repo, $request_path, $hash);
-  
-  // CodeMirror doesn't like text/x-shellscript :|
-  if($mime == 'text/x-shellscript') $mode = 'text/x-sh';
-
-  // If the file info is being useless, try to match using
-  // file extension instead.
-  else if($mime == 'text/plain') {
-    $mode = match($ext) {
-      'md' => 'text/x-markdown',
-      'json' => 'application/json',
-      'jsonld' => 'application/ld+json',
-      'ts' => 'application/typescript',
-      default => $ext
-    };
-
-    if(str_ends_with($ext, 'js')) $mode = 'text/javascript';
-    if(str_ends_with($ext, 'html')) $mode = 'text/html';
-  }
-
-  // For all other cases, let CodeMirror decide.
-  else $mode = $mime;
+  $mime = \core\detectMimeType($repo, $request_path, $hash);
 ?>
 
 <div class="container blob">
@@ -49,8 +28,20 @@
     <img src="data:<?= $mime ?>;base64,<?= base64_encode($blob) ?>">
   <?php elseif($mime == 'application/octet-stream'): ?>
     <p>Cannot render binary data.</p>
+  <?php elseif($ext == 'md'): ?>
+    <article class="readme">
+      <?php
+        $parser = new Sitdown($repo, $hash, path_parent($request_path));
+        echo $parser->text($blob);
+      ?>
+    </article>
   <?php else: ?>
     <pre class="code"><code><?= htmlspecialchars($blob) ?></code></pre>
+
+    <?php
+      // CodeMirror is not a fan of text/x-shellscript.
+      $mode = $mime == 'text/x-shellscript' ? 'text/x-sh' : $mime;
+    ?>
 
     <script>
       // Mime-Type: <?= $mime ?>
