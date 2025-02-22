@@ -4,8 +4,8 @@
 
 namespace cache;
 
-define('CACHE', "cache.html");
-define('TMP', "/tmp/cache.html");
+define('CACHE', "/tmp/cache.html");
+define('TMP', "/tmp/tmp.html");
 
 define('ENTRYPOINT', __DIR__ . "/index.php");
 
