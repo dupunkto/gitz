@@ -2,7 +2,6 @@
 
 PORT=4000
 ENTRYPOINT=dev.php
-REMOTE=s11
 DOMAIN=git.dupunkto.org
 
 DEPLOY="$DEPLOY --exclude favicon.ico"
@@ -17,5 +16,6 @@ serve() {
 }
 
 deploy() {
-  $DEPLOY . $REMOTE:domains/$DOMAIN/public_html
+  $DEPLOY . s11:domains/$DOMAIN/public_html
+  $DEPLOY . nov:/volume1/docker/gitz
 }
