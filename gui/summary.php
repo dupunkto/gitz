@@ -36,7 +36,7 @@
     </a></p>
 
     <h3>Read/write</h3>
-    <p>robinb@dupunkto.org:<?= $namespace ?>/<?= $repo_name ?></p>
+    <p>gitwastaken@dupunkto.org:<?= $namespace ?>/<?= $repo_name ?></p>
 
     <small>You can contribute changes using <a href="//git-send-email.io">git send-email</a>.</small>
   </section>
