@@ -255,8 +255,14 @@ header .description span {
   margin-bottom: 0.3rem;
 }
 
-.commit-log .rev {
+.commit-log .rev,
+.commit-log .author {
   float: right;
+}
+
+.commit-log .author {
+  font-weight: bold;
+  margin-right: 1em;
 }
 
 .commit-log .dt {
