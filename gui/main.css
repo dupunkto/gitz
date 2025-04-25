@@ -277,6 +277,36 @@ header .description span {
   flex-direction: column;
 }
 
+.contributors {
+  margin-top: 5em;
+  margin-bottom: -7em;
+  font-size: 0.7em;
+}
+
+.contributors h3 {
+  text-align: right;
+  margin-bottom: 0.7em !important;
+}
+
+.contributor-bar {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.contributor-bar a {
+  color: white;
+}
+
+.contributor-slice {
+  display: inline-block;
+  max-width: 500px;
+  background: #b783ff;
+  height: 15px;
+}
+
 .readme {
   max-width: 770px;
   width: 100%;

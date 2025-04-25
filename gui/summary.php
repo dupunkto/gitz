@@ -39,6 +39,24 @@
     <p><?= USER ?>@dupunkto.org:<?= $namespace ?>/<?= $repo_name ?></p>
 
     <small>You can contribute changes using <a href="//git-send-email.io">git send-email</a>.</small>
+
+    <?php $contributors = \core\getContributors($repo) ?>
+    <?php $total = array_sum(array_map(fn($c) => $c['count'], $contributors)) ?>
+
+    <section class="contributors">
+      <h3><?= count($contributors) ?> contributors</h3>
+
+      <?php foreach($contributors as $contributor): ?>
+        <p class="contributor-bar">
+          <span
+            class="contributor-slice"
+            style="width: <?= $contributor['count'] / $total * 100 ?>%"
+            title="<?= $contributor['count'] ?>/<?= $total ?> commits">
+          </span>
+          <a href="mailto:<?= $contributor['email'] ?>"><?= $contributor['author'] ?></a>
+        </p>
+      <?php endforeach; ?>
+    </section>
   </section>
 </aside>
 

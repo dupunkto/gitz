@@ -279,6 +279,26 @@ function isHEAD($repo, $branch) {
   return $branch == $repo->getCurrentBranchName();
 }
 
+function getContributors($repo, $branch = "HEAD") {
+  $contributors = $repo->execute('shortlog', '-sne', $branch);
+  return collectContributors($contributors);
+}
+
+function collectContributors($contributors) {
+  return array_map(fn($line) => collectContributorData($line), $contributors);
+}
+
+function collectContributorData($line) {
+  [$count, $author, $email] = preg_split('/\s+/', trim($line));
+  $email = preg_match('/<([^<>]+)>/', $email, $extr);
+
+  return [
+    'count' => $count,
+    'author' => $author,
+    'email' => $extr[1] ?? null,
+  ];
+}
+
 define('COLLECT_FORMAT', ['--pretty=format:%H|%cd|%s|%an|%ae', '--date=iso-strict']);
 
 function getLatestCommits($repo, $branch = "HEAD", $n = MAX_COMMITS) {
