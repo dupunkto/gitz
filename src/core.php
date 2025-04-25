@@ -285,18 +285,34 @@ function getContributors($repo, $branch = "HEAD") {
 }
 
 function collectContributors($contributors) {
-  return array_map(fn($line) => collectContributorData($line), $contributors);
+  return array_reduce($contributors, fn($acc, $line) => collectContributorData($acc, $line), []);
 }
 
-function collectContributorData($line) {
+function collectContributorData($acc, $line) {
   [$count, $author, $email] = preg_split('/\s+/', trim($line));
-  $email = preg_match('/<([^<>]+)>/', $email, $extr);
+  $email = extract_email($email);
 
-  return [
-    'count' => $count,
-    'author' => $author,
-    'email' => $extr[1] ?? null,
-  ];
+  $collected = [];
+  $found = false;
+
+  foreach($acc as $contributor) {
+    if(($email && $contributor['email'] == $email) || $contributor['author'] == $author) {
+      $contributor['count'] += $count;
+      $found = true;
+    }
+
+    $collected[] = $contributor;
+  }
+
+  if(!$found) {
+    $collected[] = [
+      'count' => $count,
+      'author' => $author,
+      'email' => $email,  
+    ];
+  }
+
+  return $collected;
 }
 
 define('COLLECT_FORMAT', ['--pretty=format:%H|%cd|%s|%an|%ae', '--date=iso-strict']);

@@ -85,3 +85,12 @@ function is_absolute($url) {
     || str_starts_with($url, "https://")
     || str_starts_with($url, "//");
 }
+
+function find_by($haystack, $key, $value) {
+  return $haystack[array_find_key($haystack, fn($v, $k) => $value == $v && $key == $k)];
+}
+
+function extract_email($email) {
+  preg_match('/<([^<>]+)>/', $email, $matches);
+  return $matches[1] ?? null;
+}
