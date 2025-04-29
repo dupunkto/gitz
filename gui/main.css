@@ -297,7 +297,7 @@ header .description span {
 }
 
 .contributor-bar a {
-  color: white;
+  color: currentColor;
 }
 
 .contributor-slice {
