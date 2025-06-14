@@ -446,6 +446,23 @@ header .description span {
   padding-right: 1em;
 }
 
+.path {
+  margin-right: 0.5em;
+  flex-grow: 1;
+}
+
+.download {
+  text-align: right;
+  background: light-dark(#f8f9fa, #131618);
+  color: currentColor;
+  text-decoration: none;
+  padding: 0 10px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 footer.container {
   font-size: 0.8em;
   color: gray;

@@ -24,6 +24,9 @@
           } ?>
         </code>
         <code class="path">/<?= $request_path ?></code>
+        <?php if ($page == 'blob'): ?>
+          <a class="download" href="<?= $repo_url ?>/raw/<?= $params[2] ?>/<?= $request_path ?>">view raw</a>
+        <?php endif; ?>
       <?php else: ?>
         <?= \core\getDescription($repo) ?>
       <?php endif; ?>

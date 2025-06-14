@@ -80,7 +80,7 @@ switch(true) {
           $hash = $params[1];
           break;
 
-        case route("@/(tree|blob)/{$alnum}(.*)$@"):
+        case route("@/(tree|blob|raw)/{$alnum}(.*)$@"):
           $page ??= $params[1];
 
           if(\core\isCommitHash($params[2])) $hash = $params[2];
@@ -97,6 +97,14 @@ switch(true) {
     http_response_code(404);
     $page = "404";
     break;
+}
+
+if($page == "raw") {
+  $blob = \core\getBlob($repo, $request_path, $hash);
+  $mime = \core\detectMimeType($repo, $request_path, $hash);
+
+  header("Content-Type: $mime"); echo $blob;
+  exit;
 }
 
 ?>
