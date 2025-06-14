@@ -80,22 +80,13 @@ switch(true) {
           $hash = $params[1];
           break;
 
-        case route("@/tree/{$alnum}(.*)$@"):
-          $page ??= "tree";
+        case route("@/(tree|blob)/{$alnum}(.*)$@"):
+          $page ??= $params[1];
 
-          if(\core\isCommitHash($params[1])) $hash = $params[1];
-          else $hash = \core\getLatestHash($repo, $params[1]);
+          if(\core\isCommitHash($params[2])) $hash = $params[2];
+          else $hash = \core\getLatestHash($repo, $params[2]);
 
-          $request_path = trim($params[2], "/");
-          break;
-
-        case route("@/blob/{$alnum}(.*)$@"):
-          $page ??= "blob";
-
-          if(\core\isCommitHash($params[1])) $hash = $params[1];
-          else $hash = \core\getLatestHash($repo, $params[1]);
-
-          $request_path = trim($params[2], "/");
+          $request_path = trim($params[3], "/");
           break;
       }
 
