@@ -8,7 +8,7 @@
   <source srcset="/api/graph?m=light" media="(prefers-color-scheme: light)"/>
   <source srcset="/api/graph?m=dark" media="(prefers-color-scheme: dark)"/>
 
-  <img src="/api/graph" width="100%" class="container" style="margin: 1em auto">
+  <img src="/api/graph" width="100%" class="container" style="margin: 1em auto; aspect-ratio: 7.6;">
 </picture>
 
 <?php $total_repos = 0 ?>
