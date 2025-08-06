@@ -153,6 +153,11 @@ header .description span {
   font-style: italic;
 }
 
+.commit-graph {
+  margin: 1em auto;
+  aspect-ratio: 7.6;
+}
+
 .summary {
   display: grid;
   grid-template-columns: 7fr 3fr 5fr;
