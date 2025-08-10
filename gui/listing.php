@@ -8,7 +8,12 @@
   <source srcset="/api/graph?m=light" media="(prefers-color-scheme: light)"/>
   <source srcset="/api/graph?m=dark" media="(prefers-color-scheme: dark)"/>
 
-  <img src="/api/graph" width="100%" class="container commit-graph" alt="Commit graph">
+  <img
+    src="/api/graph"
+    width="100%"
+    class="container commit-graph"
+    alt="Loading commit graph... (turns out analyzing 'git log' for 70+ repos is quite expensive)"
+  />
 </picture>
 
 <?php $total_repos = 0 ?>
