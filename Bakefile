@@ -2,12 +2,8 @@
 
 PORT=4000
 ENTRYPOINT=dev.php
-DOMAIN=git.dupunkto.org
 
-DEPLOY="$DEPLOY --exclude favicon.ico"
-
-# Configure the PHP server to start two
-# concurrent threads.
+# Configure the PHP server to start two concurrent threads.
 export PHP_CLI_SERVER_WORKERS=2
 export SCAN_PATH="$HOME/downloads/git-backup-2"
 
@@ -16,6 +12,5 @@ serve() {
 }
 
 deploy() {
-  $DEPLOY . s11:domains/$DOMAIN/public_html
-  $DEPLOY . nov:/volume1/docker/gitz
+  lift deploy
 }
