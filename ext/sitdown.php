@@ -14,7 +14,7 @@ class Sitdown extends Parsedown {
 
       $path = $image['element']['attributes']['src'];
 
-      if(!is_absolute($path)) {
+      if(!is_url($path)) {
         $path = trim(path_join($this->base, $path), '/');
         $blob = \core\getBlob($this->repo, $path, $this->hash);
         $mime = \core\detectMimeType($this->repo, $path, $this->hash);

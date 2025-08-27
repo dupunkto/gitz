@@ -1,6 +1,5 @@
 <?php
-// Contains some basic configuration for getting gitz
-// up-and-running.
+// Basic configuration for getting Gitz up-and-running.
 
 define('USER', 'gitwastaken');
 define('HOUSEKEEPING', false);

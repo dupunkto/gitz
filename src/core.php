@@ -5,13 +5,13 @@ namespace core;
 require_once __DIR__ . "/config.php";
 require_once __DIR__ . "/router.php";
 require_once __DIR__ . "/dates.php";
-require_once __DIR__ . "/utils.php";
+require_once __DIR__ . "/neuro.php";
 
 function resolveDumbClone($repo, $query) {
   $repo_path = $repo->getRepositoryPath();
   $query_path = path_join($repo_path, $query);
   
-  return validate_path($repo_path, $query_path);
+  return resolve_path($repo_path, $query_path);
 }
 
 function generateGraph($git, $year, $color, $mode) {
@@ -392,4 +392,10 @@ function fmtMode($mode) {
   }
 
   return $t_char . $p_str;
+}
+
+function hasTLD($str) {
+  $TLDs = [".nl", ".com", ".org", ".eu"];
+  $matches = array_filter($TLDs, fn ($tld) => str_ends_with($str, $tld));
+  return !empty($matches);
 }
