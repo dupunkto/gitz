@@ -2,6 +2,5 @@ name: git.dupunkto.org
 type: static
 host: nov
 src: .
-target: /volume1/docker/gitz
 exclude:
 - favicon.ico
