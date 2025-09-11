@@ -1,9 +1,9 @@
 <?php
 // Public rendering engine.
 
-require_once __DIR__ . "/src/core.php";
+require_once __DIR__ . "/core/core.php";
 require_once __DIR__ . '/vendor/autoload.php';
-require_once __DIR__ . "/ext/sitdown.php";
+require_once __DIR__ . "/extra/markdown.php";
 
 $git = new CzProject\GitPhp\Git;
 
@@ -113,11 +113,11 @@ if($page == "raw") {
   <head>
     <title>{du}punkto git repositories</title>
     <style>
-      <?php include __DIR__ . "/gui/main.css" ?>
+      <?php include __DIR__ . "/partials/main.css" ?>
     </style>
   </head>
   <body>
-    <?php if(isset($repo) && $repo != false) include __DIR__ . "/gui/header.php" ?>
-    <?php if(isset($page) && $page != false) include __DIR__ . "/gui/$page.php" ?>
+    <?php if(isset($repo) && $repo != false) include __DIR__ . "/partials/header.php" ?>
+    <?php if(isset($page) && $page != false) include __DIR__ . "/partials/$page.php" ?>
   </body>
 </html>

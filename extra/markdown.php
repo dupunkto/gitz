@@ -1,6 +1,6 @@
 <?php
 
-class Sitdown extends Parsedown {
+class Markdown extends Parsedown {
   function __construct($repo, $hash, $base) {
     $this->repo = $repo;
     $this->hash = $hash;

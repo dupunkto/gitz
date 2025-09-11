@@ -66,7 +66,7 @@
       $blob = \core\getREADME($repo);
       $hash = \core\getLatestHash($repo, $branch);
 
-      $parser = new Sitdown($repo, $hash, '/');
+      $parser = new Markdown($repo, $hash, '/');
 
       echo $parser->text($blob);
     ?>

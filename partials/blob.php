@@ -31,7 +31,7 @@
   <?php elseif($ext == 'md'): ?>
     <article class="readme">
       <?php
-        $parser = new Sitdown($repo, $hash, path_parent($request_path));
+        $parser = new Markdown($repo, $hash, path_parent($request_path));
         echo $parser->text($blob);
       ?>
     </article>

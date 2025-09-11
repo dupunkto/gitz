@@ -2,7 +2,7 @@
 // Development server. Contains certain routes that
 // the production server doesn't need, as they're configured in Apache.
 
-require_once __DIR__ . "/src/core.php";
+require_once __DIR__ . "/core/core.php";
 require_once __DIR__ . '/vendor/autoload.php';
 
 $requested_file = path_join(__DIR__, $path);
