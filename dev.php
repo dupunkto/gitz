@@ -5,13 +5,13 @@
 require_once __DIR__ . "/core/core.php";
 require_once __DIR__ . '/vendor/autoload.php';
 
-$requested_file = path_join(__DIR__, $path);
-
 // Explicitly enable error reporting 
-// for easier debugging.
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL ^ E_DEPRECATED);
+// for easier debugging in development.
+error_reporting(E_ALL & ~E_DEPRECATED);
+ini_set("display_errors", 1);
+ini_set("display_startup_errors", 1);
+
+$requested_file = path_join(__DIR__, $path);
 
 switch(true) {
   case is_file($requested_file) and is_builtin():
