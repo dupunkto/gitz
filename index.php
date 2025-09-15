@@ -25,7 +25,7 @@ switch(true) {
     $page ??= "listing";
     break;
 
-  case route("@/api/graph/?(\d{4})?@"):
+  case route("/api/graph/?(\d{4})?"):
     header('Content-Type: image/svg+xml');
     header('Cache-Control: max-age=86400');
 
@@ -37,11 +37,11 @@ switch(true) {
     exit;
 
   // Redirect bare namespaces to /
-  case route("@{$ns_pattern}/?$@"):
+  case route("{$ns_pattern}/?$"):
     header("Location: /");
     exit;
 
-  case scope("@{$ns_pattern}/{$alnum}.git/(.*)@"):
+  case scope("{$ns_pattern}/{$alnum}.git/(.*)"):
     $namespace = $params[1];
     $repo_name = $params[2];
 
@@ -58,7 +58,7 @@ switch(true) {
       exit;
     }
 
-  case scope("@{$ns_pattern}/{$alnum}@"):
+  case scope("{$ns_pattern}/{$alnum}"):
     $namespace = $params[1];
     $repo_name = $params[2];
 
@@ -66,21 +66,21 @@ switch(true) {
 
     if($repo = mountRepo($namespace, $repo_name)) {
       switch(true) {
-        case route("@^/?$@"):
+        case route("^/?$"):
           $page ??= "summary";
           break;
   
-        case route("@/log/(.*)$@"):
+        case route("/log/(.*)$"):
           $page ??= "log";
           $branch = $params[1];
           break;
 
-        case route("@/commit/(.*)$@"):
+        case route("/commit/(.*)$"):
           $page ??= "commit";
           $hash = $params[1];
           break;
 
-        case route("@/(tree|blob|raw)/{$alnum}(.*)$@"):
+        case route("/(tree|blob|raw)/{$alnum}(.*)$"):
           $page ??= $params[1];
 
           if(\core\isCommitHash($params[2])) $hash = $params[2];

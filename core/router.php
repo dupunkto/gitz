@@ -15,14 +15,14 @@ $params = [];
 
 function route($pattern) {
   global $path, $params;
-  return preg_match($pattern, $path, $params);
+  return preg_match("@$pattern@", $path, $params);
 }
 
 function scope($pattern) {
   global $path, $params;
 
-  if (preg_match($pattern, $path, $params)) {
-    $path = preg_replace($pattern, "", $path);
+  if (preg_match("@$pattern@", $path, $params)) {
+    $path = preg_replace("@$pattern@", "", $path);
     return true;
   }
 
