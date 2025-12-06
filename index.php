@@ -25,6 +25,12 @@ switch(true) {
     $page ??= "listing";
     break;
 
+  case $path == '/robots.txt' and UNLISTED:
+    header("Content-Type: text/plain");
+    echo "User-agent: *\n";
+    echo "Disallow: /\n";
+    exit;
+
   case route("/api/graph/?(\d{4})?"):
     header('Content-Type: image/svg+xml');
     header('Cache-Control: max-age=86400');
@@ -112,6 +118,9 @@ if($page == "raw") {
 <html lang="en">
   <head>
     <title>{du}punkto git repositories</title>
+    <?php if(UNLISTED): ?>
+      <meta name="robots" content="noindex, nofollow" />
+    <?php endif ?>
     <style>
       <?php include __DIR__ . "/partials/main.css" ?>
     </style>

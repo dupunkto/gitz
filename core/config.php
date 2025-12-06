@@ -5,6 +5,7 @@ define('USER', 'gitwastaken');
 define('HOUSEKEEPING', false);
 define('MAX_COMMITS', 5);
 define('MAX_REPOS', 7);
+define('UNLISTED', true);
 
 define('SCAN_PATH', getenv("SCAN_PATH", local_only: true) ?: '/home/' . USER);
 define('NAMESPACES', ['axcelott', 'dupunkto', 'sites', 'meta', 'scttr', 'havas', 'neopub', 'grape-lang', 'nindo', 'ggijs', 'skylight', 'unlibrary', 'legacy', 'forks']);
