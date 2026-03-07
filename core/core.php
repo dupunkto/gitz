@@ -399,3 +399,15 @@ function hasTLD($str) {
   $matches = array_filter($TLDs, fn ($tld) => str_ends_with($str, $tld));
   return !empty($matches);
 }
+
+function getHomepageURL($repo, $repo_name) {
+  $path = $repo->getRepositoryPath() . "/homepage-url";
+  $url = @rtrim(file_get_contents($path));
+  return $url ?: (hasTLD($repo_name) ? "//{$repo_name}" : false);
+}
+
+function getDocumentationURL($repo) {
+  $path = $repo->getRepositoryPath() . "/documentation-url";
+  $url = @rtrim(file_get_contents($path));
+  return $url ?: false;
+}

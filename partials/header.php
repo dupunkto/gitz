@@ -9,8 +9,11 @@
       <?php foreach(\core\listRemotes($repo) as $remote): ?>
         <a href="<?= \core\getRemoteURL($repo, $remote) ?>"><?= $remote ?></a>
       <?php endforeach; ?>
-      <?php if(\core\hasTLD($repo_name)): ?>
-        <a href="//<?= $repo_name ?>">Homepage</a>
+      <?php if($homepage = \core\getHomepageURL($repo, $repo_name)): ?>
+        <a href="<?= $homepage ?>">Homepage</a>
+      <?php endif; ?>
+      <?php if($docs = \core\getDocumentationURL($repo)): ?>
+        <a href="<?= $docs ?>">Documentation</a>
       <?php endif; ?>
     </nav>
   </div>
