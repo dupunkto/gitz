@@ -5,7 +5,7 @@ ENTRYPOINT=dev.php
 
 # Configure the PHP server to start two concurrent threads.
 export PHP_CLI_SERVER_WORKERS=2
-export SCAN_PATH="$HOME/downloads/git-backup-2"
+export SCAN_PATH="$HOME/downloads/git"
 
 serve() {
   php -S 0.0.0.0:$PORT $ENTRYPOINT
