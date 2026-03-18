@@ -1,3 +1,5 @@
+@import url("https://cdn.geheimesite.nl/punkt.css");
+
 html {
   font-family: sans-serif;
   line-height: 1.15;
@@ -11,9 +13,6 @@ html {
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI symbol";
-  color-scheme: light dark;
-  background-color: light-dark(#fff, #212529);
-  color: light-dark(#212529, #f8f9fa);
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
@@ -118,7 +117,7 @@ header nav a {
   border: none;
   cursor: pointer;
   color: light-dark(#495057, #ced4da);
-  border-color: light-dark(#dee2e6, #131618) light-dark(#dee2e6, #131618) light-dark(#fff, #000);
+  border-color: light-dark(#dee2e6, #2b2b33) light-dark(#dee2e6, #2b2b33) light-dark(#fff, #000);
   text-transform: lowercase;
   line-height: 17px;
   padding-bottom: 3px;
@@ -139,12 +138,12 @@ header h1 a:hover {
 
 header nav a.selected, header nav a:hover {
   color: light-dark(#000, #fff);
-  background: light-dark(#ddd, #131618);
+  background: light-dark(#ddd, #2b2b33);
 }
 
 .line {
   margin-top: 0;
-  background: light-dark(#ddd, #131618);
+  background: light-dark(#ddd, #2b2b33);
   padding: 0.1em 0;
 }
 
@@ -221,7 +220,7 @@ header .description span {
 }
 
 .summary .logs ul li {
-  background: light-dark(#f8f9fa, #131618);
+  background: light-dark(#f1f1f1, #2b2b33);
   text-overflow: ellipsis;
   overflow: hidden;
   padding: 0.5rem;
@@ -319,7 +318,7 @@ header .description span {
 
 .readme pre {
   max-width: 100%;
-  background: light-dark(#e9ecef, #131618);
+  background: light-dark(#e9ecef, #2b2b33);
   padding: .25rem;
   display: block;
   font-size: 87.5%;
@@ -343,11 +342,11 @@ header .description span {
 .epic {
   padding-top: 38px;
   margin-top: 0;
-  border-bottom: 27px solid light-dark(#ddd, #131618);;
+  border-bottom: 27px solid light-dark(#ddd, #2b2b33);;
 }
 
 .epic h1 {
-  background: light-dark(#ddd, #131618);
+  background: light-dark(#ddd, #2b2b33);
   padding: 0 20px;
   margin-bottom: -14px;
 }
@@ -359,6 +358,8 @@ header .description span {
 
 .listing h2 {
   margin-bottom: 0.4em;
+  border-bottom: none;
+  padding-bottom: 0;
 }
 
 .listing ul {
@@ -386,7 +387,7 @@ header .description span {
 
 .listing a {
   display: block;
-  background: light-dark(#f8f9fa, #131618);
+  background: light-dark(#f1f1f1, #2b2b33);
   color: currentColor;
   text-decoration: none;
   text-overflow: ellipsis;
@@ -458,7 +459,7 @@ header .description span {
 
 .download {
   text-align: right;
-  background: light-dark(#f8f9fa, #131618);
+  background: light-dark(#f1f1f1, #2b2b33);
   color: currentColor;
   text-decoration: none;
   padding: 0 10px;
@@ -475,6 +476,11 @@ footer.container {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+/* punkt overrides */
+code {
+  font-size: 1rem;
 }
 
 /* diff2html customizations */
