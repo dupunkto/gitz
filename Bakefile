@@ -7,6 +7,11 @@ ENTRYPOINT=dev.php
 export PHP_CLI_SERVER_WORKERS=2
 export SCAN_PATH="$HOME/downloads/git"
 
+setup() {
+  required composer
+  composer install
+}
+
 serve() {
   php -S 0.0.0.0:$PORT $ENTRYPOINT
 }
