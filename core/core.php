@@ -131,16 +131,24 @@ function listRepositories($git, $namespace) {
 
       $commits = $repo->execute('log', '--reverse', '--format=%cI');
       $created = strtotime(@$commits[0]);
+      $updated = strtotime(end($commits));
 
       $repositories[] = [
         'name' => $child,
+        'updated' => $updated,
         'created' => $created,
+        'recent' => isActive($repo)
       ];
     }
   }
 
-  usort($repositories, function($a, $b) {
-    return $b['created'] - $a['created'];
+  usort($repositories, function ($a, $b) {
+    if ($a['recent'] !== $b['recent'])
+      return $b['recent'] <=> $a['recent'];
+    if ($a['recent'])
+      return $b['updated'] <=> $a['updated'];
+
+    return $b['created'] <=> $a['created'];
   });
 
   return array_map(fn($repo) => $repo['name'], $repositories);
@@ -148,6 +156,12 @@ function listRepositories($git, $namespace) {
 
 function repoExists($path) {
   return file_exists(path_join($path, 'git-daemon-export-ok'));
+}
+
+function isActive($repo) {
+  $commits = $repo->execute('log', '--since=1 month ago', '--format=%cI');
+  $commits = array_filter($commits); // Removes empty lines
+  return count($commits) > 3;
 }
 
 function listRemotes($repo) {
