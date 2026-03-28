@@ -231,7 +231,7 @@ header .description span {
   content: " — ";
 }
 
-.summary .logs .dt {
+.summary .logs .dt, .listing .dt {
   color: gray;
   font-size: 0.6rem;
   float: right;

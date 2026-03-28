@@ -27,9 +27,9 @@
       <h2><?= $namespace ?></h2>
       
       <ul>
-        <?php foreach(\core\listRepositories($git, $namespace) as $repo_name): ?>
+        <?php foreach(\core\listRepositories($git, $namespace, detailed: true) as $details): ?>
           <?php
-            $path = path_join(SCAN_PATH, $namespace, $repo_name);
+            $path = path_join(SCAN_PATH, $namespace, $details['name']);
             $repo = $git->open($path);
             
             $total_repos++;
@@ -42,8 +42,11 @@
           <?php if($count == MAX_REPOS + 1) echo "</ul><details><summary>More</summary>" ?>
 
           <?php if($count <= MAX_REPOS) echo "<li>" ?>
-            <a href="/~<?= $namespace ?>/<?= $repo_name ?>">
-              <h3><?= $repo_name ?></h3>
+            <a href="/~<?= $namespace ?>/<?= $details['name'] ?>">
+              <?php if($details['recent']): ?>
+                <time class="dt"><?= \dates\timeAgo($details['updated']) ?></time>
+              <?php endif; ?>
+              <h3><?= $details['name'] ?></h3>
               <p><?= \core\getDescription($repo) ?></p>
             </a>
           <?php if($count <= MAX_REPOS) echo "</li>" ?>

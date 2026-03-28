@@ -111,7 +111,7 @@ function listAllRepositories($git) {
   return $repos;
 }
 
-function listRepositories($git, $namespace) {
+function listRepositories($git, $namespace, $detailed = false) {
   $repositories = [];
   $scan_path = path_join(SCAN_PATH, $namespace);
 
@@ -151,7 +151,8 @@ function listRepositories($git, $namespace) {
     return $b['created'] <=> $a['created'];
   });
 
-  return array_map(fn($repo) => $repo['name'], $repositories);
+  return $detailed ? $repositories :
+    array_map(fn($repo) => $repo['name'], $repositories);
 }
 
 function repoExists($path) {

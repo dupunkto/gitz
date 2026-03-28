@@ -5,7 +5,11 @@ namespace dates;
 
 use DateTimeImmutable;
 
-function timeAgo(DateTimeImmutable $dateTime) {
+function timeAgo($dateTime) {
+  if (is_int($dateTime)) {
+    $dateTime = (new DateTimeImmutable())->setTimestamp($dateTime);
+  }
+
   $now = new DateTimeImmutable();
   $diff = $now->diff($dateTime);
 
