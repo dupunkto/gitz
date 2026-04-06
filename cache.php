@@ -4,9 +4,13 @@
 
 namespace cache;
 
-define('CACHE', "/tmp/cache.html");
-define('TMP', "/tmp/tmp.html");
+define('CACHE', match(@$_GET['show']) {
+  'all' => "/tmp/cache__all.html",
+  'legacy' => "/tmp/cache__legacy.html",
+  default => "/tmp/cache__default.html"
+});
 
+define('TMP', "/tmp/tmp.html");
 define('ENTRYPOINT', __DIR__ . "/index.php");
 
 function capture($closure) {

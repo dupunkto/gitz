@@ -356,6 +356,23 @@ header .description span {
   align-items: flex-start;
 }
 
+.listing a.back,
+.listing a.legacy {
+  width: 100%;
+  color: currentColor;
+  text-decoration: none;
+  font-size: 2em;
+  margin: 0.5em 0;
+}
+
+.listing a.back {
+  margin-bottom: -0.5em;
+}
+
+.listing a.legacy {
+  font-size: 1.2em;
+}
+
 .listing h2 {
   margin-bottom: 0.1em;
   border-bottom: none;
@@ -385,7 +402,7 @@ header .description span {
   }
 }
 
-.listing a {
+.listing section a {
   font-family: var(--font-sans);
   font-size: 1rem;
   display: block;
