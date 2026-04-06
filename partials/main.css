@@ -361,12 +361,13 @@ header .description span {
   width: 100%;
   color: currentColor;
   text-decoration: none;
-  font-size: 2em;
   margin: 0.5em 0;
 }
 
 .listing a.back {
-  margin-bottom: -0.5em;
+  font-size: 1.3em;
+  margin-top: 1em;
+  margin-bottom: -1.25em;
 }
 
 .listing a.legacy {
