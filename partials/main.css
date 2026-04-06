@@ -352,13 +352,15 @@ header .description span {
 }
 
 .listing {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(max(300px, 100%/3 - 1rem), 1fr));
   gap: 1.5rem;
   align-items: flex-start;
 }
 
 .listing a.back,
 .listing a.legacy {
-  width: 100%;
+  grid-column: 1 / -1;
   color: currentColor;
   text-decoration: none;
   margin: 0.5em 0;
@@ -386,22 +388,6 @@ header .description span {
   margin: 0;
 }
 
-.listing section {
-  width: 100%;
-}
-
-@media (min-width: 768px) {
-  .listing section {
-    width: calc(50% - 1.5rem);
-    float: left;
-  }
-}
-
-@media (min-width: 1200px) {
-  .listing section {
-    width: calc(100% / 3 - 1.5rem);
-  }
-}
 
 .listing section a {
   font-family: var(--font-sans);
@@ -414,7 +400,6 @@ header .description span {
   overflow: hidden;
   padding: 0.5rem;
   margin-bottom: 0.3rem;
-  width: 100%;
 }
 
 .listing h3,
