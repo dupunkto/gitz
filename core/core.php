@@ -129,7 +129,8 @@ function listRepositories($git, $namespace, $detailed = false) {
         $repo->execute('update-server-info');
       }
 
-      $commits = $repo->execute('log', '--reverse', '--format=%cI');
+      $commits = $repo->execute('log', '--all', '--format=%cI');
+      sort($commits);
       $created = strtotime(@$commits[0]);
       $updated = strtotime(end($commits));
 
