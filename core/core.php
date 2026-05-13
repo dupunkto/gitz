@@ -427,3 +427,9 @@ function getDocumentationURL($repo) {
   $url = @rtrim(file_get_contents($path));
   return $url ?: false;
 }
+
+function getPackageURL($repo) {
+  $path = $repo->getRepositoryPath() . "/package-url";
+  $url = @rtrim(file_get_contents($path));
+  return $url ?: false;
+}

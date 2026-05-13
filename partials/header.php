@@ -15,6 +15,9 @@
       <?php if($docs = \core\getDocumentationURL($repo)): ?>
         <a href="<?= $docs ?>">Documentation</a>
       <?php endif; ?>
+      <?php if($package = \core\getPackageURL($repo)): ?>
+        <a href="<?= $package ?>">Package</a>
+      <?php endif; ?>
     </nav>
   </div>
   <div class="line">
