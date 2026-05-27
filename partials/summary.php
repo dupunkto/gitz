@@ -19,11 +19,11 @@
     
     <?php foreach($repo->getLocalBranches() as $branch): ?>
       <h3 <?php if(\core\isHEAD($repo, $branch)) echo 'class="head"' ?>>
-        <?= $branch ?>
+        <?= esc_inner($branch) ?>
       </h3>
       <p>
-        <a href="<?= $repo_url ?>/tree/<?= $branch ?>">tree</a>
-        <a href="<?= $repo_url ?>/log/<?= $branch ?>">log</a>
+        <a href="<?= $repo_url ?>/tree/<?= esc_attr($branch) ?>">tree</a>
+        <a href="<?= $repo_url ?>/log/<?= esc_attr($branch) ?>">log</a>
       </p>
     <?php endforeach; ?>
   </section>
@@ -53,7 +53,7 @@
             style="width: <?= $contributor['count'] / $total * 100 ?>%"
             title="<?= $contributor['count'] ?>/<?= $total ?> commits">
           </span>
-          <a href="mailto:<?= $contributor['email'] ?>"><?= $contributor['author'] ?></a>
+          <a href="mailto:<?= esc_attr($contributor['email']) ?>"><?= esc_inner($contributor['author']) ?></a>
         </p>
       <?php endforeach; ?>
     </section>

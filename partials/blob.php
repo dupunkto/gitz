@@ -25,7 +25,7 @@
 
 <div class="container blob">
   <?php if(str_starts_with($mime, 'image/')): ?>
-    <img src="data:<?= $mime ?>;base64,<?= base64_encode($blob) ?>">
+    <img src="data:<?= esc_attr($mime) ?>;base64,<?= base64_encode($blob) ?>">
   <?php elseif($mime == 'application/octet-stream'): ?>
     <p>Cannot render binary data.</p>
   <?php elseif($ext == 'md'): ?>
@@ -44,15 +44,12 @@
     ?>
 
     <script>
-      // Mime-Type: <?= $mime ?>
-      // Extension: <?= $ext ?>
-
       const codeElement = document.querySelector(".code");
       const containerElement = document.querySelector(".blob");
 
       CodeMirror(containerElement, {
         value: codeElement.innerText,
-        mode:  "<?= $mode ?>",
+        mode:  <?= json_encode($mode) ?>,
         indentUnit: 2,
         lineWrapping: false,
         lineNumbers: true,

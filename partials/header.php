@@ -4,22 +4,22 @@
     <?php $branch ??= \core\getDefaultBranch($repo) ?>
     <nav>
       <a class="item-summary <?php if($page == "summary") echo 'selected' ?>" href="<?= $repo_url ?>">Summary</a>
-      <a class="item-log <?php if($page == "log") echo 'selected' ?>" href="<?= $repo_url ?>/log/<?= $branch ?>">Log</a>
-      <a class="item-tree <?php if(in_array($page, ['tree', 'blob'])) echo 'selected' ?>" href="<?= $repo_url ?>/tree/<?= @$params[2] ?? $branch ?>">Tree</a>
+      <a class="item-log <?php if($page == "log") echo 'selected' ?>" href="<?= $repo_url ?>/log/<?= esc_attr($branch) ?>">Log</a>
+      <a class="item-tree <?php if(in_array($page, ['tree', 'blob'])) echo 'selected' ?>" href="<?= $repo_url ?>/tree/<?= esc_attr(@$params[2] ?? $branch) ?>">Tree</a>
       <?php if($homepage = \core\getHomepageURL($repo, $repo_name)): ?>
-        <a  class="item-homepage" href="<?= $homepage ?>">Homepage</a>
+        <a  class="item-homepage" href="<?= esc_attr($homepage) ?>">Homepage</a>
       <?php endif; ?>
       <?php if($docs = \core\getDocumentationURL($repo)): ?>
-        <a class="item-docs" href="<?= $docs ?>">Docs</a>
+        <a class="item-docs" href="<?= esc_attr($docs) ?>">Docs</a>
       <?php endif; ?>
       <?php if($package = \core\getPackageURL($repo)): ?>
-        <a class="item-package" href="<?= $package ?>">Package</a>
+        <a class="item-package" href="<?= esc_attr($package) ?>">Package</a>
       <?php endif; ?>
       <?php foreach(\core\listRemotes($repo) as $remote): ?>
-        <a class="item-remote" href="<?= \core\getRemoteURL($repo, $remote) ?>"><?= $remote ?></a>
+        <a class="item-remote" href="<?= esc_attr(\core\getRemoteURL($repo, $remote)) ?>"><?= esc_inner($remote) ?></a>
       <?php endforeach; ?>
       <?php if($login = \core\getLoginURL($repo)): ?>
-        <a class="item-login" href="<?= $login ?>">Login &rarr;</a>
+        <a class="item-login" href="<?= esc_attr($login) ?>">Login &rarr;</a>
       <?php endif; ?>
     </nav>
   </div>
@@ -32,15 +32,15 @@
             'blob' => '-rw-r--r--'
           } ?>
         </code>
-        <code class="path">/<?= $request_path ?></code>
+        <code class="path">/<?= esc_inner($request_path) ?></code>
         <?php if(\core\isCommitHash(@$params[2])): ?>
           <code class="rev">rev: <a href="<?= $repo_url ?>/commit/<?= esc_attr($params[2]) ?>"><?= esc_inner(substr($params[2], 0, 7)) ?></a></code>
-          <a class="permalink" href="<?= $repo_url ?>/<?= $page ?>/<?= $branch ?>/<?= $request_path ?>">view latest</a>
+          <a class="permalink" href="<?= $repo_url ?>/<?= $page ?>/<?= esc_attr($branch) ?>/<?= esc_attr($request_path) ?>">view latest</a>
         <?php else: ?>
-          <a class="permalink" href="<?= $repo_url ?>/<?= $page ?>/<?= $hash ?>/<?= $request_path ?>">permalink</a>
+          <a class="permalink" href="<?= $repo_url ?>/<?= $page ?>/<?= $hash ?>/<?= esc_attr($request_path) ?>">permalink</a>
         <?php endif; ?>
         <?php if ($page == 'blob'): ?>
-          <a class="download" href="<?= $repo_url ?>/raw/<?= esc_attr($params[2]) ?>/<?= $request_path ?>">view raw</a>
+          <a class="download" href="<?= $repo_url ?>/raw/<?= esc_attr($params[2]) ?>/<?= esc_attr($request_path) ?>">view raw</a>
         <?php endif; ?>
       <?php else: ?>
         <?= \core\getDescription($repo) ?>

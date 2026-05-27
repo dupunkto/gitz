@@ -21,7 +21,7 @@
 
     <p>
       Commited on <time><?= \dates\humanReadable($commit['datetime']) ?></time>
-      by <a href="mailto:<?= $commit['email'] ?>"><?= htmlspecialchars($commit['author']) ?></a>. <a class="browse" href="<?= $repo_url ?>/tree/<?= $hash ?>">Browse files in this commit</a>
+      by <a href="mailto:<?= esc_attr($commit['email']) ?>"><?= esc_inner($commit['author']) ?></a>. <a class="browse" href="<?= $repo_url ?>/tree/<?= $hash ?>">Browse files in this commit</a>
     </p>
   </hgroup>
 
@@ -29,10 +29,10 @@
     $object = $repo->getCommit($hash);
     $message = $object->getBody();
 
-    if($message) echo '<pre class="message">' . htmlspecialchars($message) . '</pre>';
+    if($message) echo '<pre class="message">' . esc_inner($message) . '</pre>';
   ?>
 
-  <pre class="diff"><code><?= htmlspecialchars($commit['diff']) ?></code></pre>
+  <pre class="diff"><code><?= esc_inner($commit['diff']) ?></code></pre>
 </div>
 
 <script>
