@@ -3,23 +3,23 @@
     <h1><a href="/">~<?= $namespace ?></a>/<?= $repo_name ?></h1>
     <?php $branch ??= \core\getDefaultBranch($repo) ?>
     <nav>
-      <a href="<?= $repo_url ?>" <?php if($page == "summary") echo 'class="selected"' ?>>Summary</a>
-      <a href="<?= $repo_url ?>/log/<?= $branch ?>" <?php if($page == "log") echo 'class="selected"' ?>>Log</a>
-      <a href="<?= $repo_url ?>/tree/<?= $branch ?>" <?php if(in_array($page, ['tree', 'blob'])) echo 'class="selected"' ?>>Tree</a>
-      <?php foreach(\core\listRemotes($repo) as $remote): ?>
-        <a href="<?= \core\getRemoteURL($repo, $remote) ?>"><?= $remote ?></a>
-      <?php endforeach; ?>
+      <a class="item-summary <?php if($page == "summary") echo 'selected' ?>" href="<?= $repo_url ?>">Summary</a>
+      <a class="item-log <?php if($page == "log") echo 'selected' ?>" href="<?= $repo_url ?>/log/<?= $branch ?>">Log</a>
+      <a class="item-tree <?php if(in_array($page, ['tree', 'blob'])) echo 'selected' ?>" href="<?= $repo_url ?>/tree/<?= $branch ?>">Tree</a>
       <?php if($homepage = \core\getHomepageURL($repo, $repo_name)): ?>
-        <a href="<?= $homepage ?>">Homepage</a>
+        <a  class="item-homepage" href="<?= $homepage ?>">Homepage</a>
       <?php endif; ?>
       <?php if($docs = \core\getDocumentationURL($repo)): ?>
-        <a href="<?= $docs ?>">Documentation</a>
+        <a class="item-docs" href="<?= $docs ?>">Docs</a>
       <?php endif; ?>
       <?php if($package = \core\getPackageURL($repo)): ?>
-        <a href="<?= $package ?>">Package</a>
+        <a class="item-package" href="<?= $package ?>">Package</a>
       <?php endif; ?>
+      <?php foreach(\core\listRemotes($repo) as $remote): ?>
+        <a class="item-remote" href="<?= \core\getRemoteURL($repo, $remote) ?>"><?= $remote ?></a>
+      <?php endforeach; ?>
       <?php if($login = \core\getLoginURL($repo)): ?>
-        <a href="<?= $login ?>">Login</a>
+        <a class="item-login" href="<?= $login ?>">Login &rarr;</a>
       <?php endif; ?>
     </nav>
   </div>
