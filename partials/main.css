@@ -468,7 +468,11 @@ header .description span {
   flex-grow: 1;
 }
 
-.download {
+.rev {
+  padding: 0 10px;
+}
+
+.download, .permalink {
   text-align: right;
   background: light-dark(#f1f1f1, #2b2b33);
   color: currentColor;

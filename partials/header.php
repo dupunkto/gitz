@@ -5,7 +5,7 @@
     <nav>
       <a class="item-summary <?php if($page == "summary") echo 'selected' ?>" href="<?= $repo_url ?>">Summary</a>
       <a class="item-log <?php if($page == "log") echo 'selected' ?>" href="<?= $repo_url ?>/log/<?= $branch ?>">Log</a>
-      <a class="item-tree <?php if(in_array($page, ['tree', 'blob'])) echo 'selected' ?>" href="<?= $repo_url ?>/tree/<?= $branch ?>">Tree</a>
+      <a class="item-tree <?php if(in_array($page, ['tree', 'blob'])) echo 'selected' ?>" href="<?= $repo_url ?>/tree/<?= @$params[2] ?? $branch ?>">Tree</a>
       <?php if($homepage = \core\getHomepageURL($repo, $repo_name)): ?>
         <a  class="item-homepage" href="<?= $homepage ?>">Homepage</a>
       <?php endif; ?>
@@ -33,8 +33,14 @@
           } ?>
         </code>
         <code class="path">/<?= $request_path ?></code>
+        <?php if(\core\isCommitHash(@$params[2])): ?>
+          <code class="rev">rev: <a href="<?= $repo_url ?>/commit/<?= esc_attr($params[2]) ?>"><?= esc_inner(substr($params[2], 0, 7)) ?></a></code>
+          <a class="permalink" href="<?= $repo_url ?>/<?= $page ?>/<?= $branch ?>/<?= $request_path ?>">view latest</a>
+        <?php else: ?>
+          <a class="permalink" href="<?= $repo_url ?>/<?= $page ?>/<?= $hash ?>/<?= $request_path ?>">permalink</a>
+        <?php endif; ?>
         <?php if ($page == 'blob'): ?>
-          <a class="download" href="<?= $repo_url ?>/raw/<?= $params[2] ?>/<?= $request_path ?>">view raw</a>
+          <a class="download" href="<?= $repo_url ?>/raw/<?= esc_attr($params[2]) ?>/<?= $request_path ?>">view raw</a>
         <?php endif; ?>
       <?php else: ?>
         <?= \core\getDescription($repo) ?>
