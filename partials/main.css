@@ -459,16 +459,16 @@ header .description span {
   background-color: rgba(0,0,0,5%);
 }
 
-.mode {
+.line .mode {
   padding-right: 1em;
 }
 
-.path {
+.line .path {
   margin-right: 0.5em;
   flex-grow: 1;
 }
 
-.rev {
+.line .rev {
   padding: 0 10px;
 }
 
