@@ -433,3 +433,9 @@ function getPackageURL($repo) {
   $url = @rtrim(file_get_contents($path));
   return $url ?: false;
 }
+
+function getLoginURL($repo) {
+  $path = $repo->getRepositoryPath() . "/login-url";
+  $url = @rtrim(file_get_contents($path));
+  return $url ?: false;
+}

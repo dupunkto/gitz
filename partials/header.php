@@ -18,6 +18,9 @@
       <?php if($package = \core\getPackageURL($repo)): ?>
         <a href="<?= $package ?>">Package</a>
       <?php endif; ?>
+      <?php if($login = \core\getLoginURL($repo)): ?>
+        <a href="<?= $login ?>">Login</a>
+      <?php endif; ?>
     </nav>
   </div>
   <div class="line">
