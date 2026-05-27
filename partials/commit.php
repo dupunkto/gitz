@@ -21,7 +21,7 @@
 
     <p>
       Commited on <time><?= \dates\humanReadable($commit['datetime']) ?></time>
-      by <a href="mailto:<?= $commit['email'] ?>"><?= htmlspecialchars($commit['author']) ?></a>.
+      by <a href="mailto:<?= $commit['email'] ?>"><?= htmlspecialchars($commit['author']) ?></a>. <a class="browse" href="<?= $repo_url ?>/tree/<?= $hash ?>">Browse files in this commit</a>
     </p>
   </hgroup>
 
