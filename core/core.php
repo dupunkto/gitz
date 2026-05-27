@@ -189,6 +189,7 @@ function parseRemoteURL($remote, $url) {
 function lookupRemoteDomain($remote) {
   return match($remote) {
     "codeberg" => "codeberg.org",
+    "gitlab" => "gitlab.com",
     default => "github.com",
   };
 }
