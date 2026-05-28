@@ -36,6 +36,9 @@
         <?php if(\core\isCommitHash(@$params[2])): ?>
           <code class="rev">rev: <a href="<?= $repo_url ?>/commit/<?= esc_attr($params[2]) ?>"><?= esc_inner(substr($params[2], 0, 7)) ?></a></code>
           <a class="permalink" href="<?= $repo_url ?>/<?= $page ?>/<?= esc_attr($branch) ?>/<?= esc_attr($request_path) ?>">view latest</a>
+        <?php elseif(@$params[2] && $params[2] != $branch): ?>
+          <code class="branch">branch: <a href="<?= $repo_url ?>/tree/<?= esc_attr($params[2]) ?>"><?= esc_inner($params[2]) ?></a></code>
+          <a class="permalink" href="<?= $repo_url ?>/<?= $page ?>/<?= esc_attr($branch) ?>/<?= esc_attr($request_path) ?>">view latest</a>
         <?php else: ?>
           <a class="permalink" href="<?= $repo_url ?>/<?= $page ?>/<?= $hash ?>/<?= esc_attr($request_path) ?>">permalink</a>
         <?php endif; ?>
