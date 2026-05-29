@@ -5,7 +5,7 @@
     <nav>
       <a class="item-summary <?php if($page == "summary") echo 'selected' ?>" href="<?= $repo_url ?>">Summary</a>
       <a class="item-log <?php if($page == "log") echo 'selected' ?>" href="<?= $repo_url ?>/log/<?= esc_attr($branch) ?>">Log</a>
-      <a class="item-tree <?php if(in_array($page, ['tree', 'blob'])) echo 'selected' ?>" href="<?= $repo_url ?>/tree/<?= esc_attr(@$params[2] ?? $branch) ?>">Tree</a>
+      <a class="item-tree <?php if(in_array($page, ['tree', 'blob'])) echo 'selected' ?>" href="<?= $repo_url ?>/tree/<?= esc_attr($ref ?? $branch) ?>">Tree</a>
       <?php if($homepage = \core\getHomepageURL($repo, $repo_name)): ?>
         <a  class="item-homepage" href="<?= esc_attr($homepage) ?>">Homepage</a>
       <?php endif; ?>
@@ -33,20 +33,42 @@
           } ?>
         </code>
         <code class="path">/<?= esc_inner($request_path) ?></code>
-        <?php if(\core\isCommitHash(@$params[2])): ?>
-          <code class="rev">rev: <a href="<?= $repo_url ?>/commit/<?= esc_attr($params[2]) ?>"><?= esc_inner(substr($params[2], 0, 7)) ?></a></code>
-          <a class="permalink" href="<?= $repo_url ?>/<?= $page ?>/<?= esc_attr($branch) ?>/<?= esc_attr($request_path) ?>">view latest</a>
-        <?php elseif(@$params[2] && $params[2] != $branch): ?>
-          <code class="branch">branch: <a href="<?= $repo_url ?>/tree/<?= esc_attr($params[2]) ?>"><?= esc_inner($params[2]) ?></a></code>
-          <a class="permalink" href="<?= $repo_url ?>/<?= $page ?>/<?= esc_attr($branch) ?>/<?= esc_attr($request_path) ?>">view latest</a>
+      <?php endif; ?>
+
+      <?php if(isset($hash)): ?>
+        <?php if($ref == $hash): ?>
+          <code class="rev">rev:
+            <a href="<?= esc_attr(path_join([$repo_url, "commit", $hash])) ?>">
+              <?= esc_inner(substr($hash, 0, 7)) ?>
+            </a>
+          </code>
+          <a class="permalink" href="<?= esc_attr(path_join($repo_url, $page, $branch, $request_path)) ?>">
+            view latest
+          </a>
         <?php else: ?>
-          <a class="permalink" href="<?= $repo_url ?>/<?= $page ?>/<?= $hash ?>/<?= esc_attr($request_path) ?>">permalink</a>
-        <?php endif; ?>
-        <?php if ($page == 'blob'): ?>
-          <a class="download" href="<?= $repo_url ?>/raw/<?= esc_attr($params[2]) ?>/<?= esc_attr($request_path) ?>">view raw</a>
+          <?php $branches = $repo->getLocalBranches() ?>
+          <?php if(count($branches) > 1): ?>
+            <code class="branch">
+              branch:
+              <select onchange='window.location = `<?= esc_attr(path_join($repo_url, $page)) ?>` + `/${event.target.value}/` + `<?= esc_attr($request_path) ?>`'>
+                <?php foreach($branches as $branch): ?>
+                  <option <?php if($params[2] == $branch) echo "selected" ?>>
+                    <?= esc_inner($branch) ?>
+                  </option>
+                <?php endforeach; ?>
+              </select>
+            </code>
+          <?php endif; ?>
+          <a class="permalink" href="<?= esc_attr(path_join($repo_url, $page, $hash, $request_path)) ?>">
+            permalink
+          </a>
         <?php endif; ?>
       <?php else: ?>
         <?= \core\getDescription($repo) ?>
+      <?php endif; ?>
+
+      <?php if ($page == 'blob'): ?>
+        <a class="download" href="<?= $repo_url ?>/raw/<?= esc_attr($params[2]) ?>/<?= esc_attr($request_path) ?>">view raw</a>
       <?php endif; ?>
     </p>
   </div>

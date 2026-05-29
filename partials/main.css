@@ -486,6 +486,17 @@ header .description span {
   padding: 0 10px;
 }
 
+.line .branch {
+  overflow: hidden;
+  text-wrap: nowrap;
+}
+
+.line .branch select {
+  display: inline;
+  padding: 2px 10px;
+  max-width: fit-content;
+}
+
 .download, .permalink {
   text-align: right;
   background: light-dark(#f1f1f1, #2b2b33);

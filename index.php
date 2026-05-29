@@ -7,8 +7,8 @@ require_once __DIR__ . "/extra/markdown.php";
 
 $git = new CzProject\GitPhp\Git;
 
-$alnum = '([a-zA-Z0-9_\-\.]+)';
-$ns_pattern = "^/~?{$alnum}";
+$alnum_pattern = '([a-zA-Z0-9_\-\.]+)';
+$ns_pattern = "^/~?{$alnum_pattern}";
 
 function mountRepo($namespace, $repo_name) {
   global $git;
@@ -47,7 +47,7 @@ switch(true) {
     header("Location: /");
     exit;
 
-  case scope("{$ns_pattern}/{$alnum}.git/(.*)"):
+  case scope("{$ns_pattern}/{$alnum_pattern}.git/(.*)"):
     $namespace = $params[1];
     $repo_name = $params[2];
 
@@ -64,7 +64,7 @@ switch(true) {
       exit;
     }
 
-  case scope("{$ns_pattern}/{$alnum}"):
+  case scope("{$ns_pattern}/{$alnum_pattern}"):
     $namespace = $params[1];
     $repo_name = $params[2];
 
@@ -86,11 +86,18 @@ switch(true) {
           $hash = $params[1];
           break;
 
-        case route("/(tree|blob|raw)/{$alnum}(.*)$"):
+        case route("/(tree|blob|raw)/{$alnum_pattern}(.*)$"):
           $page ??= $params[1];
+          $ref = $params[2];
 
-          if(\core\isCommitHash($params[2])) $hash = $params[2];
-          else $hash = \core\getLatestHash($repo, $params[2]);
+          if(\core\isCommitHash($ref)) {
+            $hash = $ref;
+          }
+          else {
+            $branch = $ref;
+            $hash = \core\getLatestHash($repo, $branch);
+          }
+
 
           $request_path = trim($params[3], "/");
           break;
