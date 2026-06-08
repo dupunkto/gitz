@@ -62,7 +62,7 @@
                 <time class="dt"><?= \dates\timeAgo($details['updated']) ?></time>
               <?php endif; ?>
               <h3><?= $details['name'] ?></h3>
-              <p><?= esc_inner(\core\getDescription($repo)) ?></p>
+              <p><?= $description ?></p>
             </a>
           <?php if($count <= $max_repos) echo "</li>" ?>
         <?php endforeach; ?>
