@@ -35,7 +35,7 @@
         <code class="path">/<?= esc_inner($request_path) ?></code>
       <?php endif; ?>
 
-      <?php if(isset($hash)): ?>
+      <?php if(isset($hash) && isset($ref)): ?>
         <?php if($ref == $hash): ?>
           <code class="rev">rev:
             <a href="<?= esc_attr(path_join($repo_url, "commit", $hash)) ?>">
