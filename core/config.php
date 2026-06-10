@@ -8,7 +8,7 @@ define('MAX_REPOS', 7);
 define('UNLISTED', true);
 
 define('SCAN_PATH', getenv("SCAN_PATH", local_only: true) ?: '/home/' . USER);
-define('NAMESPACES', ['axcelott', 'dupunkto', 'sites', 'meta', 'scttr', 'neopub', 'grape-lang', 'nindo', 'skylight', 'unlibrary', 'legacy', 'forks']);
+define('NAMESPACES', ['axcelott', 'dupunkto', 'sites', 'meta', 'neopub', 'grape-lang', 'nindo', 'skylight', 'unlibrary', 'legacy', 'forks']);
 define('LEGACY', ['neopub', 'grape-lang', 'nindo','skylight', 'unlibrary', 'legacy']);
 
 // Disable error logging in prod environments
