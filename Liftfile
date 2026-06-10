@@ -2,5 +2,3 @@ name: git.dupunkto.org
 type: static
 host: nov
 src: .
-exclude:
-- favicon.ico
