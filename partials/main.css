@@ -161,9 +161,8 @@ header nav a:hover {
   padding: 0.1em 0;
 }
 
-header .description span {
-  color: #666;
-  font-style: italic;
+header .description {
+  flex-grow: 1;
 }
 
 .commit-graph {
@@ -493,7 +492,7 @@ header .description span {
 
 .line .branch select {
   display: inline;
-  padding: 2px 10px;
+  padding: 0 10px;
   max-width: fit-content;
 }
 

@@ -35,6 +35,26 @@
         <code class="path">/<?= esc_inner($request_path) ?></code>
       <?php endif; ?>
 
+      <?php if(!isset($hash) || !isset($ref)): ?>
+        <span class="description"><?= \core\getDescription($repo) ?></span>
+      <?php endif; ?>
+
+      <?php if(in_array($page, ['log', 'tree', 'blob']) && !(isset($ref) && $ref == $hash)): ?>
+        <?php $branches = $repo->getLocalBranches() ?>
+        <?php if(count($branches) > 1): ?>
+          <code class="branch">
+            branch:
+            <select onchange='window.location = `<?= esc_attr(path_join($repo_url, $page)) ?>/${event.target.value}<?php if($page != 'log') echo '/' . esc_attr($request_path ?? '') ?>`'>
+              <?php foreach($branches as $b): ?>
+                <option <?php if($b == $branch) echo "selected" ?>>
+                  <?= esc_inner($b) ?>
+                </option>
+              <?php endforeach; ?>
+            </select>
+          </code>
+        <?php endif; ?>
+      <?php endif; ?>
+
       <?php if(isset($hash) && isset($ref)): ?>
         <?php if($ref == $hash): ?>
           <code class="rev">rev:
@@ -46,25 +66,10 @@
             view latest
           </a>
         <?php else: ?>
-          <?php $branches = $repo->getLocalBranches() ?>
-          <?php if(count($branches) > 1): ?>
-            <code class="branch">
-              branch:
-              <select onchange='window.location = `<?= esc_attr(path_join($repo_url, $page)) ?>` + `/${event.target.value}/` + `<?= esc_attr($request_path) ?>`'>
-                <?php foreach($branches as $branch): ?>
-                  <option <?php if($params[2] == $branch) echo "selected" ?>>
-                    <?= esc_inner($branch) ?>
-                  </option>
-                <?php endforeach; ?>
-              </select>
-            </code>
-          <?php endif; ?>
           <a class="permalink" href="<?= esc_attr(path_join($repo_url, $page, $hash, $request_path)) ?>">
             permalink
           </a>
         <?php endif; ?>
-      <?php else: ?>
-        <?= \core\getDescription($repo) ?>
       <?php endif; ?>
 
       <?php if ($page == 'blob'): ?>
