@@ -29,12 +29,18 @@ function serveSmartInfoRefs($repo) {
 
 function serveSmartUploadPack($repo) {
   $repo_path = $repo->getRepositoryPath();
+
   $input = file_get_contents('php://input');
+
+  // Git gzips the request body once it grows large (incremental fetches).
+  if (@$_SERVER['HTTP_CONTENT_ENCODING'] == 'gzip') {
+    $input = gzdecode($input);
+  }
 
   header('Content-Type: application/x-git-upload-pack-result');
   header('Cache-Control: no-cache, max-age=0, must-revalidate');
 
-  if (ob_get_level()) ob_end_flush();
+  while (ob_get_level()) ob_end_flush();
 
   $proc = proc_open(
     'git upload-pack --stateless-rpc ' . escapeshellarg($repo_path),
@@ -42,12 +48,44 @@ function serveSmartUploadPack($repo) {
     $pipes
   );
 
-  fwrite($pipes[0], $input);
-  fclose($pipes[0]);
+  if (!is_resource($proc)) {
+    http_response_code(500);
+    return;
+  }
 
-  fpassthru($pipes[1]);
+  stream_set_blocking($pipes[0], false);
+  stream_set_blocking($pipes[1], false);
+
+  // Interleave writing the request and draining the packfile, so neither
+  // pipe's buffer can fill while we block on the other.
+  $len = strlen($input);
+  $written = 0;
+
+  while (true) {
+    $read = [$pipes[1]];
+    $write = $written < $len ? [$pipes[0]] : [];
+    $except = null;
+
+    if (stream_select($read, $write, $except, null) === false) break;
+
+    if ($write) {
+      $n = fwrite($pipes[0], substr($input, $written, 65536));
+      $written += $n === false ? $len - $written : $n;
+      if ($written >= $len) fclose($pipes[0]);
+    }
+
+    if ($read) {
+      $chunk = fread($pipes[1], 65536);
+      if ($chunk === '' || $chunk === false) {
+        if (feof($pipes[1])) break;
+      } else {
+        echo $chunk;
+        flush();
+      }
+    }
+  }
+
   fclose($pipes[1]);
-
   proc_close($proc);
 }
 
