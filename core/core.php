@@ -38,7 +38,7 @@ function serveSmartUploadPack($repo) {
 
   $proc = proc_open(
     'git upload-pack --stateless-rpc ' . escapeshellarg($repo_path),
-    [['pipe', 'r'], ['pipe', 'w'], STDERR],
+    [['pipe', 'r'], ['pipe', 'w'], ['file', 'php://stderr', 'w']],
     $pipes
   );
 
