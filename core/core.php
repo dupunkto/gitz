@@ -10,8 +10,45 @@ require_once __DIR__ . "/neuro.php";
 function resolveDumbClone($repo, $query) {
   $repo_path = $repo->getRepositoryPath();
   $query_path = path_join($repo_path, $query);
-  
+
   return resolve_path($repo_path, $query_path);
+}
+
+function serveSmartInfoRefs($repo) {
+  $repo_path = $repo->getRepositoryPath();
+
+  header('Content-Type: application/x-git-upload-pack-advertisement');
+  header('Cache-Control: no-cache, max-age=0, must-revalidate');
+
+  $len = strlen("# service=git-upload-pack\n") + 4;
+  echo sprintf('%04x', $len) . "# service=git-upload-pack\n";
+  echo "0000";
+
+  passthru('git upload-pack --stateless-rpc --advertise-refs ' . escapeshellarg($repo_path));
+}
+
+function serveSmartUploadPack($repo) {
+  $repo_path = $repo->getRepositoryPath();
+  $input = file_get_contents('php://input');
+
+  header('Content-Type: application/x-git-upload-pack-result');
+  header('Cache-Control: no-cache, max-age=0, must-revalidate');
+
+  if (ob_get_level()) ob_end_flush();
+
+  $proc = proc_open(
+    'git upload-pack --stateless-rpc ' . escapeshellarg($repo_path),
+    [['pipe', 'r'], ['pipe', 'w'], STDERR],
+    $pipes
+  );
+
+  fwrite($pipes[0], $input);
+  fclose($pipes[0]);
+
+  fpassthru($pipes[1]);
+  fclose($pipes[1]);
+
+  proc_close($proc);
 }
 
 function generateGraph($git, $year, $color, $mode) {

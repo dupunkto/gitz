@@ -50,10 +50,21 @@ switch(true) {
   case scope("{$ns_pattern}/{$alnum_pattern}.git/(.*)"):
     $namespace = $params[1];
     $repo_name = $params[2];
+    $git_path = $params[3];
 
     if($repo = mountRepo($namespace, $repo_name)) {
+      if($git_path == 'info/refs' && @$_GET['service'] == 'git-upload-pack') {
+        \core\serveSmartInfoRefs($repo);
+        exit;
+      }
+
+      if($git_path == 'git-upload-pack' && $_SERVER['REQUEST_METHOD'] == 'POST') {
+        \core\serveSmartUploadPack($repo);
+        exit;
+      }
+
       header('Content-Type: application/octet-stream');
-      $request_path = \core\resolveDumbClone($repo, $params[3]);
+      $request_path = \core\resolveDumbClone($repo, $git_path);
 
       match(true) {
         $request_path == false => http_response_code(403),
