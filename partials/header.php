@@ -9,6 +9,9 @@
       <?php if($homepage = \core\getHomepageURL($repo, $repo_name)): ?>
         <a  class="item-homepage" href="<?= esc_attr($homepage) ?>">Homepage</a>
       <?php endif; ?>
+      <?php if($demo = \core\getDemoURL($repo, $repo_name)): ?>
+        <a  class="item-demo" href="<?= esc_attr($demo) ?>">Demo</a>
+      <?php endif; ?>
       <?php if($docs = \core\getDocumentationURL($repo)): ?>
         <a class="item-docs" href="<?= esc_attr($docs) ?>">Docs</a>
       <?php endif; ?>
