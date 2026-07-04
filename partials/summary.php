@@ -31,12 +31,12 @@
     <h2>Clone <small><?= \core\formatTotalSize($repo) ?></small></h2>
 
     <h3>Read-only</h3>
-    <p><a href="//git.dupunkto.org/~<?= $namespace ?>/<?= $repo_name ?>">
-      https://git.dupunkto.org/~<?= $namespace ?>/<?= $repo_name ?>.git
+    <p><a href="<?= HTTP_BASE ?>/~<?= $namespace ?>/<?= $repo_name ?>">
+      <?= HTTP_BASE ?>/~<?= $namespace ?>/<?= $repo_name ?>.git
     </a></p>
 
     <h3>Read/write</h3>
-    <p><?= USER ?>@dupunkto.org:<?= $namespace ?>/<?= $repo_name ?></p>
+    <p><?= USER ?>@<?= SSH_BASE ?>:<?= $namespace ?>/<?= $repo_name ?></p>
 
     <small>You can contribute changes using <a href="//git-send-email.io">git send-email</a>.</small>
 

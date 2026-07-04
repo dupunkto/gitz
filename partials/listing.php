@@ -1,6 +1,6 @@
 <header class="epic">
   <div class="container">
-    <h1>{du}punkto git hosting</h1>
+    <h1><?= SITE_TITLE ?></h1>
   </div>
 </header>
 

@@ -135,7 +135,8 @@ if($page == "raw") {
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>{du}punkto git repositories</title>
+    <meta charset="UTF-8" />
+    <title><?= SITE_TITLE ?></title>
     <?php if(UNLISTED): ?>
       <meta name="robots" content="noindex, nofollow" />
     <?php endif ?>
