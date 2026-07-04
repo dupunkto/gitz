@@ -15,6 +15,9 @@
       <?php if($docs = \core\getDocumentationURL($repo)): ?>
         <a class="item-docs" href="<?= esc_attr($docs) ?>">Docs</a>
       <?php endif; ?>
+      <?php if($issues = \core\getIssuesURL($repo, $repo_name)): ?>
+        <a  class="item-issues" href="<?= esc_attr($issues) ?>">Issues</a>
+      <?php endif; ?>
       <?php if($package = \core\getPackageURL($repo)): ?>
         <a class="item-package" href="<?= esc_attr($package) ?>">Package</a>
       <?php endif; ?>
