@@ -13,7 +13,7 @@ define('SSH_BASE', getenv("SSH_BASE") ?: "dupunkto.org");
 define('HTTP_BASE', rtrim(getenv("HTTP_BASE") ?: "https://git.dupunkto.org", "/"));
 
 define('GITZ_URL', rtrim(getenv("GITZ_URL") ?: "https://git.dupunkto.org", "/"));
-define('BUGZ_URL', rtrim(getenv("BUGZ_URL") ?: "https://issues.dupunkto.org", "/"));
+define('BUGZ_URL', rtrim(getenv("BUGZ_URL") ?: "https://bugs.dupunkto.org", "/"));
 
 define('SCAN_PATH', getenv("SCAN_PATH", local_only: true) ?: '/home/' . USER);
 define('NAMESPACES', ['axcelott', 'dupunkto', 'sites', 'meta', 'neopub', 'grape-lang', 'nindo', 'skylight', 'unlibrary', 'legacy', 'forks']);
