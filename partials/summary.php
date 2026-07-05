@@ -72,7 +72,7 @@
             $dark  = lighten('#7426e2', 0.4 * $ratio);
           ?>
           <li>
-            <a href="mailto:<?= esc_attr($contributor['email']) ?>" class="contributor-item">
+            <a href="mailto:<?= esc_attr($contributor['email']) ?>" class="contributor-item" title="<?= esc_attr($contributor['count']) ?> commits">
               <span class="contributor-dot" style="background: light-dark(<?= $light ?>, <?= $dark ?>)"></span><?= esc_inner($contributor['author']) ?> &lt;<?= esc_inner($contributor['email']) ?>&gt;
             </a>
           </li>
