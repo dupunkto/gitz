@@ -377,12 +377,15 @@ function getContributors($repo, $branch = "HEAD") {
 }
 
 function collectContributors($contributors) {
-  return array_reduce($contributors, fn($acc, $line) => collectContributorData($acc, $line), []);
+  $collected = array_reduce($contributors, fn($acc, $line) => collectContributorData($acc, $line), []);
+
+  // Remove @users.noreply.github.com emailaddresses.
+  return array_values(array_filter($collected, fn($c) => !str_ends_with($c['email'] ?? '', '@users.noreply.github.com')));
 }
 
 function collectContributorData($acc, $line) {
-  [$count, $author, $email] = preg_split('/\s+/', trim($line));
-  $email = extract_email($email);
+  preg_match('/^\s*(\d+)\s+(.+?)\s+(<[^>]+>)$/', trim($line), $m);
+  [$count, $author, $email] = [$m[1], $m[2], extract_email($m[3])];
 
   $collected = [];
   $found = false;
