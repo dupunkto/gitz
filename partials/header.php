@@ -21,9 +21,6 @@
       <?php if($package = \core\getPackageURL($repo)): ?>
         <a class="item-package" href="<?= esc_attr($package) ?>">Package</a>
       <?php endif; ?>
-      <?php foreach(\core\listRemotes($repo) as $remote): ?>
-        <a class="item-remote" href="<?= esc_attr(\core\getRemoteURL($repo, $remote)) ?>"><?= esc_inner($remote) ?></a>
-      <?php endforeach; ?>
       <?php if($login = \core\getLoginURL($repo)): ?>
         <a class="item-login" href="<?= esc_attr($login) ?>">Login &rarr;</a>
       <?php endif; ?>

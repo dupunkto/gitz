@@ -171,11 +171,14 @@ header .description {
 }
 
 .summary {
-  font-family: var(--font-sans);
-  font-size: 1rem;
   display: grid;
   grid-template-columns: 7fr 3fr 5fr;
-  gap: 30px;
+  gap: 0 30px;
+}
+
+.summary section {
+  font-family: var(--font-sans);
+  font-size: 1rem;
 }
 
 .summary section h2,
@@ -299,39 +302,53 @@ header .description {
   flex-direction: column;
 }
 
-.contributors {
-  margin-top: 5em;
-  margin-bottom: -7em;
-  font-size: 0.7em;
-}
-
-.contributors h3 {
-  text-align: right;
-  margin-bottom: 0.7em !important;
+.sidebar {
+  grid-column: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .contributor-bar {
   display: flex;
-  flex-direction: row-reverse;
+  height: 12px;
+  width: 100%;
+}
+
+.contributor-bar span {
+  height: 100%;
+}
+
+.contributor-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4em 1.5em;
+  list-style: none;
+  padding: 0;
+  margin-top: 0.5em;
+}
+
+.contributor-item {
+  display: flex;
   align-items: center;
   gap: 0.5em;
-  margin-bottom: 0.5em;
-}
-
-.contributor-bar a {
   color: currentColor;
+  max-width: 350px;
+  overflow: hidden;
+  text-wrap: nowrap;
+  text-overflow: ellipsis;
 }
 
-.contributor-slice {
+.contributor-dot {
   display: inline-block;
-  max-width: 500px;
-  background: #b783ff;
-  height: 15px;
+  width: 0.75em;
+  height: 0.75em;
+  flex-shrink: 0;
 }
 
 .readme {
-  max-width: 770px;
-  width: 100%;
+  grid-row: 2 / 4;
+  grid-column: 1 / 3;
 }
 
 .readme pre {

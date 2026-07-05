@@ -1,4 +1,4 @@
-<aside class="container summary">
+<main class="container summary">
   <section class="logs">
     <h2>Logs <small><?= \core\getTotalCommits($repo) ?> commits</small></h2>
     
@@ -39,28 +39,60 @@
     <p><?= USER ?>@<?= SSH_BASE ?>:<?= $namespace ?>/<?= $repo_name ?></p>
 
     <small>You can contribute changes using <a href="//git-send-email.io">git send-email</a>.</small>
-
-    <?php $contributors = \core\getContributors($repo) ?>
-    <?php $total = array_sum(array_map(fn($c) => $c['count'], $contributors)) ?>
-
-    <section class="contributors">
-      <h3><?= count($contributors) ?> contributors</h3>
-
-      <?php foreach($contributors as $contributor): ?>
-        <p class="contributor-bar">
-          <span
-            class="contributor-slice"
-            style="width: <?= $contributor['count'] / $total * 100 ?>%"
-            title="<?= $contributor['count'] ?>/<?= $total ?> commits">
-          </span>
-          <a href="mailto:<?= esc_attr($contributor['email']) ?>"><?= esc_inner($contributor['author']) ?></a>
-        </p>
-      <?php endforeach; ?>
-    </section>
   </section>
-</aside>
 
-<main class="container">
+  <?php $contributors = \core\getContributors($repo) ?>
+  <?php $total = array_sum(array_map(fn($c) => $c['count'], $contributors)) ?>
+  <?php $max_count = max(array_map(fn($c) => $c['count'], $contributors)) ?>
+
+  <aside class="sidebar">
+    <section class="contributors">
+      <?php $n = count($contributors) ?>
+      <h2>Contributions <small><?= $n ?> <?= $n === 1 ? 'contributor' : 'contributors' ?></small></h2>
+
+      <div class="contributor-bar">
+        <?php foreach($contributors as $contributor): ?>
+          <?php
+            $ratio = $contributor['count'] / $max_count;
+            $light = lighten('#7426e2', 0.75 * (1 - $ratio));
+            $dark  = lighten('#7426e2', 0.4 * $ratio);
+          ?>
+          <span
+            style="width: <?= round($contributor['count'] / $total * 100, 3) ?>%; background: light-dark(<?= $light ?>, <?= $dark ?>)"
+            title="<?= esc_attr($contributor['author']) ?>: <?= $contributor['count'] ?>/<?= $total ?> commits">
+          </span>
+        <?php endforeach; ?>
+      </div>
+
+      <ul class="contributor-list">
+        <?php foreach($contributors as $contributor): ?>
+          <?php
+            $ratio = $contributor['count'] / $max_count;
+            $light = lighten('#7426e2', 0.75 * (1 - $ratio));
+            $dark  = lighten('#7426e2', 0.4 * $ratio);
+          ?>
+          <li>
+            <a href="mailto:<?= esc_attr($contributor['email']) ?>" class="contributor-item">
+              <span class="contributor-dot" style="background: light-dark(<?= $light ?>, <?= $dark ?>)"></span><?= esc_inner($contributor['author']) ?> &lt;<?= esc_inner($contributor['email']) ?>&gt;
+            </a>
+          </li>
+        <?php endforeach; ?>
+      </ul>
+    </section>
+
+    <?php if($remotes = \core\listRemotes($repo)): ?>
+      <section class="mirrors">
+        <h2>Mirrors</h2>
+
+        <?php foreach($remotes as $remote): ?>
+          <p>
+            <b><?= esc_inner($remote) ?></b><br>
+            <a href="<?= esc_attr(\core\getRemoteURL($repo, $remote)) ?>"><?= esc_inner(\core\getRemoteURL($repo, $remote)) ?></a></p>
+        <?php endforeach; ?>
+      </section>
+    <?php endif; ?>
+  </aside>
+
   <article class="readme">
     <?php
       $blob = \core\getREADME($repo);
