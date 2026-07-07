@@ -372,8 +372,17 @@ function isHEAD($repo, $branch) {
 }
 
 function getContributors($repo, $branch = "HEAD") {
-  $contributors = $repo->execute('shortlog', '-sne', $branch);
-  return collectContributors($contributors);
+  $lines = $repo->execute('shortlog', '-sne', $branch);
+  $collected = array_reduce($lines, fn($acc, $line) => collectContributorData($acc, $line), []);
+
+  $trailers = $repo->execute('log', '--pretty=format:%(trailers:key=Co-authored-by,valueonly)', $branch);
+  foreach(array_filter($trailers, fn($l) => trim($l) !== '') as $trailer) {
+    $collected = collectContributorData($collected, "1  $trailer");
+  }
+
+  usort($collected, fn($a, $b) => $b['count'] - $a['count']);
+
+  return array_values(array_filter($collected, fn($c) => !str_ends_with($c['email'] ?? '', '@users.noreply.github.com')));
 }
 
 function collectContributors($contributors) {
