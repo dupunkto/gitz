@@ -479,6 +479,19 @@ header .description {
   margin-bottom: 2em;
 }
 
+.dot {
+  display: inline-block;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  margin: 0 0.3em;
+}
+
+.dot-open        { background: light-dark(#f5a30b, #f5ce0b); }
+.dot-completed   { background: light-dark(#166534, #5dbb7f); }
+.dot-duplicate   { background: light-dark(#6a17e1, #c197fc); }
+.dot-not-planned { background: light-dark(#6c757d, #adb5bd); }
+
 .tree ul {
   padding: 0;
   list-style: none;

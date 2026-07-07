@@ -29,11 +29,26 @@
     $object = $repo->getCommit($hash);
     $message = $object->getBody();
 
-    if($message) echo '<pre class="message">' . esc_inner($message) . '</pre>';
+    if($message) echo '<div class="message">' . \core\renderBody($message) . '</div>';
   ?>
 
   <pre class="diff"><code><?= esc_inner($commit['diff']) ?></code></pre>
 </div>
+
+<script>
+  document.querySelectorAll('[data-api]').forEach(async (span) => {
+    const response = await fetch(span.dataset.api);
+    if (!response.ok) return;
+    const { status } = await response.json();
+
+    const dot = document.createElement('span');
+
+    dot.className = `dot dot-${status}`;
+    dot.title = status;
+
+    span.prepend(dot);
+  });
+</script>
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {

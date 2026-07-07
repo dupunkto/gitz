@@ -466,6 +466,51 @@ function isCommitHash($hash) {
   return preg_match('/^[0-9a-f]{40}$/i', $hash) === 1;
 }
 
+function commitURL(string $namespace, string $repo, string $hash): string {
+  return GITZ_URL . '/~' . $namespace . '/' . $repo . '/commit/' . $hash;
+}
+
+function issueURL(string $namespace, string $project, string $number): string {
+  return BUGZ_URL . '/~' . $namespace . '/' . $project . '/' . $number;
+}
+
+function renderBody(string $text): string {
+  $converter = new \League\CommonMark\GithubFlavoredMarkdownConverter([
+    'html_input' => 'escape',
+    'allow_unsafe_links' => false,
+  ]);
+
+  $html = $converter->convert($text)->getContent();
+
+  // ~ns/repo@hash -> commit link
+  $html = preg_replace_callback(
+    '/~?([a-zA-Z0-9_\-\.]+)\/([a-zA-Z0-9_\-\.]+)@([0-9a-f]{7,40})\b/',
+    function($m) {
+      $url = esc_attr(commitURL($m[1], $m[2], $m[3]));
+      $label = esc_inner($m[1] . '/' . $m[2] . '@' . substr($m[3], 0, 7));
+      return '<a href="' . $url . '">' . $label . '</a>';
+    },
+    $html
+  );
+
+  // ~ns/project#N -> issue link
+  $html = preg_replace_callback(
+    '/~?([a-zA-Z0-9_\-\.]+)\/([a-zA-Z0-9_\-\.]+)#(\d+)/',
+    function($m) {
+      $url = esc_attr(issueURL($m[1], $m[2], $m[3]));
+      $label = esc_inner($m[1] . '/' . $m[2] . '#' . $m[3]);
+      $api = esc_attr(BUGZ_URL . '/api/issue?' . http_build_query([
+        'repo' => $m[1], 'project' => $m[2], 'number' => $m[3],
+      ]));
+      return '<span class="issue-ref" data-api="' . $api . '">'
+        . '<a href="' . $url . '">' . $label . '</a></span>';
+    },
+    $html
+  );
+
+  return $html;
+}
+
 function fmtMode($mode) {
   $mod = str_pad(decoct(octdec($mode)), 6, '0', STR_PAD_LEFT);
 
