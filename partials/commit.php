@@ -21,7 +21,7 @@
 
     <p>
       Commited on <time><?= \dates\humanReadable($commit['datetime']) ?></time>
-      by <a href="mailto:<?= esc_attr($commit['email']) ?>"><?= esc_inner($commit['author']) ?></a>. <a class="browse" href="<?= $repo_url ?>/tree/<?= $hash ?>">Browse files in this commit</a>
+      by <a href="mailto:<?= esc_attr($commit['email']) ?>"><?= esc_inner($commit['author']) ?> &lt;<?= esc_inner($commit['email']) ?>&gt;</a>. <a class="browse" href="<?= $repo_url ?>/tree/<?= $hash ?>">Browse files in this commit</a>
     </p>
   </hgroup>
 
