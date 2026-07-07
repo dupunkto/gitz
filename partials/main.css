@@ -476,7 +476,17 @@ header .description {
 }
 
 .commit-details .message {
+  font-family: monospace;
   margin-bottom: 2em;
+}
+
+.commit-details .message p {
+  margin-top: 0;
+  margin-bottom: 1em;
+}
+
+.commit-details .message p:last-of-type {
+  margin-bottom: 0;
 }
 
 .dot {
@@ -484,7 +494,7 @@ header .description {
   width: 0.7rem;
   height: 0.7rem;
   border-radius: 50%;
-  margin: 0 0.3em;
+  margin-right: 0.3em;
 }
 
 .dot-open        { background: light-dark(#f5a30b, #f5ce0b); }
