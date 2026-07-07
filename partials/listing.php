@@ -59,7 +59,7 @@
           <?php if($count <= $max_repos) echo "<li>" ?>
             <a href="/~<?= $namespace ?>/<?= $details['name'] ?>">
               <?php if($details['recent']): ?>
-                <time class="dt"><?= \dates\timeAgo($details['updated']) ?></time>
+                <time class="dt" datetime="<?= \dates\isoFormat($details['updated']) ?>"><?= \dates\timeAgo($details['updated']) ?></time>
               <?php endif; ?>
               <h3><?= $details['name'] ?></h3>
               <p><?= $description ?></p>

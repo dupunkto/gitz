@@ -26,3 +26,10 @@ function timeAgo($dateTime) {
 function humanReadable(DateTimeImmutable $dateTime) {
   return $dateTime->format('Y-m-d');
 }
+
+function isoFormat($dateTime): string {
+  if (is_int($dateTime)) {
+    $dateTime = (new DateTimeImmutable())->setTimestamp($dateTime);
+  }
+  return $dateTime->format(DateTimeInterface::ATOM);
+}

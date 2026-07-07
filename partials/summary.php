@@ -5,7 +5,7 @@
     <ul>
       <?php foreach(\core\getLatestCommits($repo) as $commit): ?>    
         <li>
-          <time class="dt"><?= \dates\timeAgo($commit['datetime']) ?></time>
+          <time class="dt" datetime="<?= \dates\isoFormat($commit['datetime']) ?>"><?= \dates\timeAgo($commit['datetime']) ?></time>
           <a class="rev" href="<?= $repo_url ?>/commit/<?= $commit['hash'] ?>"><code
             ><?= \core\toShortHash($commit['hash']) ?></code
           ></a>
