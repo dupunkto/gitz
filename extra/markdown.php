@@ -1,7 +1,11 @@
 <?php
 
 use League\CommonMark\Environment\Environment;
-use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
+use League\CommonMark\Extension\Autolink\AutolinkExtension;
+use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
+use League\CommonMark\Extension\Strikethrough\StrikethroughExtension;
+use League\CommonMark\Extension\Table\TableExtension;
+use League\CommonMark\Extension\TaskList\TaskListExtension;
 use League\CommonMark\Extension\CommonMark\Node\Inline\Image;
 use League\CommonMark\Extension\CommonMark\Node\Inline\Link;
 use League\CommonMark\MarkdownConverter;
@@ -58,10 +62,21 @@ class GitLinkRenderer implements NodeRendererInterface {
 
 class Markdown {
   private MarkdownConverter $converter;
+  private $repo;
+  private $hash;
+  private string $base;
 
   public function __construct($repo, $hash, string $base) {
-    $env = new Environment(['html_input' => 'escape', 'allow_unsafe_links' => false]);
-    $env->addExtension(new GithubFlavoredMarkdownExtension());
+    $this->repo = $repo;
+    $this->hash = $hash;
+    $this->base = $base;
+
+    $env = new Environment(['html_input' => 'allow', 'allow_unsafe_links' => true]);
+    $env->addExtension(new CommonMarkCoreExtension());
+    $env->addExtension(new AutolinkExtension());
+    $env->addExtension(new StrikethroughExtension());
+    $env->addExtension(new TableExtension());
+    $env->addExtension(new TaskListExtension());
     $env->addRenderer(Image::class, new GitImageRenderer($repo, $hash, $base));
 
     $repo_path = ltrim(substr($repo->getRepositoryPath(), strlen(SCAN_PATH)), '/');
@@ -72,6 +87,22 @@ class Markdown {
   }
 
   public function text(string $content): string {
-    return $this->converter->convert($content)->getContent();
+    $html = $this->converter->convert($content)->getContent();
+    return preg_replace_callback(
+      '/(<img\b[^>]*?\bsrc=)(["\'])([^"\']*)\2/i',
+      function ($m) {
+        $src = html_entity_decode($m[3], ENT_QUOTES);
+        if (!is_url($src)) {
+          $path = trim(path_join($this->base, $src), '/');
+          try {
+            $blob = \core\getBlob($this->repo, $path, $this->hash);
+            $mime = \core\detectMimeType($this->repo, $path, $this->hash);
+            $src = 'data:' . $mime . ';base64,' . base64_encode($blob);
+          } catch (\Throwable) {}
+        }
+        return $m[1] . $m[2] . esc_attr($src) . $m[2];
+      },
+      $html
+    );
   }
 }
