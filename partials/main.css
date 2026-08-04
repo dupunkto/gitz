@@ -432,7 +432,7 @@ header .description {
 }
 
 .listing-column section:has(details:not([open])) + section h2 {
-  margin-top: -1.5rem;
+  margin-top: -2.5rem;
 }
 
 .listing ul {
