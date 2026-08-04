@@ -396,7 +396,7 @@ header .description {
 .listing-column {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1.5rem;
 }
 
 .listing-column:not(:has(section:not([hidden]))) {
@@ -431,6 +431,10 @@ header .description {
   margin-top: 0;
 }
 
+.listing-column section:has(details:not([open])) + section h2 {
+  margin-top: -1.5rem;
+}
+
 .listing ul {
   list-style: none;
   padding: 0;
@@ -463,6 +467,7 @@ header .description {
   text-transform: lowercase;
   cursor: pointer;
   display: inline;
+  float: right;
 }
 
 .listing summary {
