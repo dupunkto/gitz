@@ -54,6 +54,8 @@
       <?php foreach($namespaces as $namespace): ?>
         <?php
           $repositories = \core\listRepositories($git, $namespace, detailed: true);
+          if(empty($repositories)) continue;
+
           $is_legacy = in_array($namespace, LEGACY);
           $is_hidden = !$show_all && $is_legacy != $show_legacy;
         ?>
