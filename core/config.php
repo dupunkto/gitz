@@ -16,7 +16,7 @@ define('GITZ_URL', rtrim(getenv("GITZ_URL") ?: "https://git.dupunkto.org", "/"))
 define('BUGZ_URL', rtrim(getenv("BUGZ_URL") ?: "https://bugs.dupunkto.org", "/"));
 
 define('SCAN_PATH', getenv("SCAN_PATH", local_only: true) ?: '/home/' . USER);
-define('NAMESPACES', ['axcelott', 'dupunkto', 'sites', 'meta', 'neopub', 'grape-lang', 'nindo', 'skylight', 'unlibrary', 'legacy', 'forks']);
+define('NAMESPACES', ['axcelott', 'ggijs', 'dupunkto', 'sites', 'meta', 'neopub', 'grape-lang', 'nindo', 'skylight', 'unlibrary', 'legacy', 'forks']);
 define('LEGACY', ['neopub', 'grape-lang', 'nindo','skylight', 'unlibrary', 'legacy']);
 
 // Disable error logging in production environments

@@ -393,6 +393,16 @@ header .description {
   align-items: flex-start;
 }
 
+.listing-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.listing-column:not(:has(section:not([hidden]))) {
+  display: none;
+}
+
 .listing a.back,
 .listing a.legacy {
   grid-column: 1 / -1;

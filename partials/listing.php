@@ -22,55 +22,86 @@
   </picture>
 <?php endif; ?>
 
-<?php $total_repos = 0 ?>
-<?php $total_namespaces = 0 ?>
-<?php $total_size = 0 ?>
+<?php
+  $total_repos = 0;
+  $total_size = 0;
+
+  $shared_namespaces = ['axcelott', 'ggijs'];
+  $namespace_columns = [$shared_namespaces];
+
+  foreach(array_diff(NAMESPACES, $shared_namespaces) as $namespace) {
+    $namespace_columns[] = [$namespace];
+  }
+?>
 
 <!-- I'm not proud of this mess..., but it works :D -->
 <main class="container listing">
-  <?php if($show_all || $show_legacy) echo '<a class="back" href="/">&larr; Back</a>' ?>
+  <?php if($show_all || $show_legacy): ?>
+    <a class="back" href="/">&larr; Back</a>
+  <?php endif; ?>
 
-  <?php foreach(NAMESPACES as $namespace): ?>
-    <?php $total_namespaces++ ?>
-    <?php $count = 0 ?>
+  <?php foreach($namespace_columns as $column_index => $namespaces): ?>
+    <?php
+      $shared_column = count($namespaces) > 1;
+      $max_repos = match(true) {
+        $shared_column => 3,
+        $column_index >= 3 => MAX_REPOS - 4,
+        default => MAX_REPOS,
+      };
+    ?>
 
-    <?php $is_legacy = in_array($namespace, LEGACY) ?>
+    <div class="listing-column">
+      <?php foreach($namespaces as $namespace): ?>
+        <?php
+          $repositories = \core\listRepositories($git, $namespace, detailed: true);
+          $is_legacy = in_array($namespace, LEGACY);
+          $is_hidden = !$show_all && $is_legacy != $show_legacy;
+        ?>
 
-    <section <?php if(!$show_all && $is_legacy != $show_legacy) echo 'hidden' ?>>
-      <h2><?= $namespace ?></h2>
+        <section <?php if($is_hidden) echo 'hidden' ?>>
+          <h2><?= $namespace ?></h2>
 
-      <ul>
-        <?php foreach(\core\listRepositories($git, $namespace, detailed: true) as $details): ?>
-          <?php
-            $path = path_join(SCAN_PATH, $namespace, $details['name']);
-            $repo = $git->open($path);
-            
-            $total_repos++;
-            $total_size += \core\getTotalSize($repo);
-            $description = \core\getDescription($repo);
+          <ul>
+            <?php foreach($repositories as $index => $details): ?>
+              <?php
+                $path = path_join(SCAN_PATH, $namespace, $details['name']);
+                $repo = $git->open($path);
 
-            $max_repos = $total_namespaces <= 3 ? MAX_REPOS : MAX_REPOS - 4;
+                $total_repos++;
+                $total_size += \core\getTotalSize($repo);
+                $description = \core\getDescription($repo);
+              ?>
 
-            $count++;
-          ?>
-
-          <?php if($count == $max_repos + 1) echo "</ul><details><summary>More</summary>" ?>
-
-          <?php if($count <= $max_repos) echo "<li>" ?>
-            <a href="/~<?= $namespace ?>/<?= $details['name'] ?>">
-              <?php if($details['recent']): ?>
-                <time class="dt" datetime="<?= \dates\isoFormat($details['updated']) ?>"><?= \dates\timeAgo($details['updated']) ?></time>
+              <?php if($index == $max_repos): ?>
+                </ul>
+                <details>
+                  <summary>More</summary>
+                  <ul>
               <?php endif; ?>
-              <h3><?= $details['name'] ?></h3>
-              <p><?= $description ?></p>
-            </a>
-          <?php if($count <= $max_repos) echo "</li>" ?>
-        <?php endforeach; ?>
-      </details>
-    </section>
+
+              <li>
+                <a href="/~<?= $namespace ?>/<?= $details['name'] ?>">
+                  <?php if($details['recent']): ?>
+                    <time class="dt" datetime="<?= \dates\isoFormat($details['updated']) ?>"><?= \dates\timeAgo($details['updated']) ?></time>
+                  <?php endif; ?>
+                  <h3><?= $details['name'] ?></h3>
+                  <p><?= $description ?></p>
+                </a>
+              </li>
+            <?php endforeach; ?>
+          </ul>
+
+          <?php if(count($repositories) > $max_repos): ?>
+            </details>
+          <?php endif; ?>
+        </section>
+      <?php endforeach; ?>
+    </div>
   <?php endforeach; ?>
 
-  <?php if(!$show_all && !$show_legacy) echo '<a class="legacy" href="/?show=legacy">Show legacy repositories &rarr;</a>' ?>
+  <?php if(!$show_all && !$show_legacy): ?>
+    <a class="legacy" href="/?show=legacy">Show legacy repositories &rarr;</a>
+  <?php endif; ?>
 </main>
 
 <footer class="container">

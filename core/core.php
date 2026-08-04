@@ -196,8 +196,9 @@ function listRepositories($git, $namespace, $detailed = false) {
     if (in_array($child, [".", ".."])) continue;
 
     $path = path_join($scan_path, $child);
-    if (repoExists($path)) {
+    if(repoExists($path)) {
       $repo = $git->open($path);
+      if(repoIsHidden($repo, $path)) continue;
 
       if(HOUSEKEEPING) {
         $repo->execute('gc', '--auto');
@@ -233,6 +234,10 @@ function listRepositories($git, $namespace, $detailed = false) {
 
 function repoExists($path) {
   return file_exists(path_join($path, 'git-daemon-export-ok'));
+}
+
+function repoIsHidden($repo, $path) {
+  if(file_exists(path_join($path, 'git-daemon-export-hidden'))) return true;
 }
 
 function isActive($repo) {
