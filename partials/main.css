@@ -425,6 +425,7 @@ header .description {
   margin-bottom: 0.1em;
   border-bottom: none;
   padding-bottom: 0;
+  width: fit-content;
 }
 
 .listing-column section + section h2 {
