@@ -1,4 +1,11 @@
-name: git.dupunkto.org
 type: static
 host: nov
-src: .
+services:
+- name: git.dupunkto.org
+  src: .
+  exclude:
+  - bin
+- name: bootstrap
+  src: bin/*.sh
+  target: /volume1/git/
+  delete: false
