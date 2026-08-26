@@ -36,7 +36,7 @@ switch(true) {
     header('Cache-Control: max-age=86400');
 
     $year = $params[1] ?? date("Y");
-    $color = @$_GET['c'] ?? '7426e2';
+    $color = @$_GET['c'] ?? GRAPH_COLOR;
     $mode = @$_GET['m'] ?? 'light';
     $author = @$_GET['u'];
 
@@ -142,16 +142,30 @@ if($page == "raw") {
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title><?= SITE_TITLE ?></title>
+    <title><?= TITLE ?></title>
+    <link rel="stylesheet" href="https://cdn.dupunkto.org/punkt.css" />
     <?php if(UNLISTED): ?>
       <meta name="robots" content="noindex, nofollow" />
     <?php endif ?>
     <style>
+      :root {
+        --link-color: light-dark(<?= LINK_COLOR_LIGHT ?>, <?= LINK_COLOR_DARK ?>);
+        --link-underline-color: light-dark(<?= LINK_UNDERLINE_LIGHT ?>, <?= LINK_UNDERLINE_DARK ?>);
+      }
       <?php include __DIR__ . "/partials/main.css" ?>
+      <?php if(CUSTOM_CSS) include CUSTOM_CSS ?>
     </style>
   </head>
   <body>
-    <?php if(isset($repo) && $repo != false) include __DIR__ . "/partials/header.php" ?>
-    <?php if(isset($page) && $page != false) include __DIR__ . "/partials/$page.php" ?>
+    <?php if(isset($repo) && $repo != false) include HEADER_TEMPLATE ?>
+    <?php if(isset($page) && $page != false): ?>
+      <?php
+        include match($page) {
+          'listing' => LISTING_TEMPLATE,
+          'summary' => SUMMARY_TEMPLATE,
+          default => __DIR__ . "/partials/$page.php",
+        };
+      ?>
+    <?php endif ?>
   </body>
 </html>

@@ -2,10 +2,10 @@
 
 namespace core;
 
+require_once __DIR__ . "/neuro.php";
 require_once __DIR__ . "/config.php";
 require_once __DIR__ . "/router.php";
 require_once __DIR__ . "/dates.php";
-require_once __DIR__ . "/neuro.php";
 
 function resolveDumbClone($repo, $query) {
   $repo_path = $repo->getRepositoryPath();
@@ -89,6 +89,41 @@ function serveSmartUploadPack($repo) {
   proc_close($proc);
 }
 
+function colorScale($color, $mode) {
+  $baseColor = "#" . $color;
+
+  return match($mode) {
+    'dark' => [
+      "#121217",
+      darken($baseColor, 0.3),
+      darken($baseColor, 0.1),
+      $baseColor,
+      lighten($baseColor, 0.05),
+      lighten($baseColor, 0.1),
+      lighten($baseColor, 0.2),
+      lighten($baseColor, 0.3),
+      lighten($baseColor, 0.35),
+      lighten($baseColor, 0.4),
+    ],
+    default => [
+      "#f8f9fa",
+      lighten($baseColor, 0.75),
+      lighten($baseColor, 0.6),
+      lighten($baseColor, 0.45),
+      lighten($baseColor, 0.3),
+      lighten($baseColor, 0.2),
+      lighten($baseColor, 0.15),
+      lighten($baseColor, 0.1),
+      lighten($baseColor, 0.05),
+      $baseColor,
+    ],
+  };
+}
+
+function activityColor($count, $color, $mode) {
+  return colorScale($color, $mode)[min(max($count, 0), 9)];
+}
+
 function generateGraph($git, $year, $color, $mode, $author = null) {
   $start = strtotime("$year-01-01");
   $end = strtotime("$year-12-31");
@@ -119,39 +154,7 @@ function generateGraph($git, $year, $color, $mode, $author = null) {
   $width = 635;
   $height = 84;
   $rectSize = 10;
-  $baseColor = "#" . $color;
-
-  switch($mode) {
-    case 'dark':
-      $colorScale = [
-        "#121217",
-        darken($baseColor, 0.3),
-        darken($baseColor, 0.1),
-        $baseColor,
-        lighten($baseColor, 0.05),
-        lighten($baseColor, 0.1),
-        lighten($baseColor, 0.2),
-        lighten($baseColor, 0.3),
-        lighten($baseColor, 0.35),
-        lighten($baseColor, 0.4),
-      ];
-      break;
-
-    default:
-      $colorScale = [
-        "#f8f9fa",
-        lighten($baseColor, 0.75), 
-        lighten($baseColor, 0.6),
-        lighten($baseColor, 0.45),
-        lighten($baseColor, 0.3),
-        lighten($baseColor, 0.2),
-        lighten($baseColor, 0.15),
-        lighten($baseColor, 0.1),
-        lighten($baseColor, 0.05),
-        $baseColor,
-      ];
-      break;
-  }
+  $colorScale = colorScale($color, $mode);
 
   $svg = '<?xml version="1.0" standalone="no"?>';
   $svg .= '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="' . $width . '" height="' . $height . '">';
@@ -195,6 +198,20 @@ function listAllRepositories($git) {
   return $repos;
 }
 
+function listListedRepositories($git) {
+  $repos = [];
+
+  foreach(array_diff(NAMESPACES, HIDDEN_NAMESPACES) as $ns) {
+    $paths = array_map(fn($name) =>
+      path_join(SCAN_PATH, $ns, $name),
+      listRepositories($git, $ns));
+
+    $repos = array_merge($repos, $paths);
+  }
+
+  return $repos;
+}
+
 function listRepositories($git, $namespace, $detailed = false) {
   $repositories = [];
   $scan_path = path_join(SCAN_PATH, $namespace);
@@ -219,11 +236,17 @@ function listRepositories($git, $namespace, $detailed = false) {
       $created = strtotime(@$commits[0]);
       $updated = strtotime(end($commits));
 
+      $recent_commits = getRecentCommitCount($repo);
+      $pinned = repoIsPinned($path);
+
       $repositories[] = [
         'name' => $child,
         'updated' => $updated,
         'created' => $created,
-        'recent' => isActive($repo)
+        'recent' => $recent_commits > 3,
+        'recent_commits' => $recent_commits,
+        'pinned' => $pinned,
+        'pin_order' => $pinned ? getRepoPinOrder($path) : null,
       ];
     }
   }
@@ -249,10 +272,22 @@ function repoIsHidden($repo, $path) {
   if(file_exists(path_join($path, 'git-daemon-export-hidden'))) return true;
 }
 
-function isActive($repo) {
+function repoIsPinned($path) {
+  return file_exists(path_join($path, 'git-daemon-export-pinned'));
+}
+
+function getRepoPinOrder($path) {
+  $order = trim(@file_get_contents(path_join($path, 'git-daemon-export-pinned')));
+  return preg_match('/^[+-]?\d+$/', $order) ? intval($order) : null;
+}
+
+function getRecentCommitCount($repo) {
   $commits = $repo->execute('log', '--since=1 month ago', '--format=%cI');
-  $commits = array_filter($commits); // Removes empty lines
-  return count($commits) > 3;
+  return count(array_filter($commits));
+}
+
+function repoIsActive($repo) {
+  return getRecentCommitCount($repo) > 3;
 }
 
 function listRemotes($repo) {

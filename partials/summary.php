@@ -54,8 +54,8 @@
         <?php foreach($contributors as $contributor): ?>
           <?php
             $ratio = $contributor['count'] / $max_count;
-            $light = lighten('#7426e2', 0.75 * (1 - $ratio));
-            $dark  = lighten('#7426e2', 0.4 * $ratio);
+            $light = lighten(CONTRIBUTION_COLOR, 0.75 * (1 - $ratio));
+            $dark = lighten(CONTRIBUTION_COLOR, 0.4 * $ratio);
           ?>
           <span
             style="width: <?= round($contributor['count'] / $total * 100, 3) ?>%; background: light-dark(<?= $light ?>, <?= $dark ?>)"
@@ -68,8 +68,8 @@
         <?php foreach($contributors as $contributor): ?>
           <?php
             $ratio = $contributor['count'] / $max_count;
-            $light = lighten('#7426e2', 0.75 * (1 - $ratio));
-            $dark  = lighten('#7426e2', 0.4 * $ratio);
+            $light = lighten(CONTRIBUTION_COLOR, 0.75 * (1 - $ratio));
+            $dark = lighten(CONTRIBUTION_COLOR, 0.4 * $ratio);
           ?>
           <li>
             <a href="mailto:<?= esc_attr($contributor['email']) ?>" class="contributor-item" title="<?= esc_attr($contributor['count']) ?> commits">

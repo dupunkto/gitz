@@ -26,10 +26,11 @@
   $total_repos = 0;
   $total_size = 0;
 
-  $shared_namespaces = ['axcelott', 'ggijs'];
-  $namespace_columns = [$shared_namespaces];
+  $visible_namespaces = array_diff(NAMESPACES, HIDDEN_NAMESPACES);
+  $shared_namespaces = array_intersect(SHARED_NAMESPACES, $visible_namespaces);
+  $namespace_columns = $shared_namespaces ? [$shared_namespaces] : [];
 
-  foreach(array_diff(NAMESPACES, $shared_namespaces) as $namespace) {
+  foreach(array_diff($visible_namespaces, $shared_namespaces) as $namespace) {
     $namespace_columns[] = [$namespace];
   }
 ?>
@@ -56,7 +57,7 @@
           $repositories = \core\listRepositories($git, $namespace, detailed: true);
           if(empty($repositories)) continue;
 
-          $is_legacy = in_array($namespace, LEGACY);
+          $is_legacy = in_array($namespace, LEGACY_NAMESPACES);
           $is_hidden = !$show_all && $is_legacy != $show_legacy;
         ?>
 
