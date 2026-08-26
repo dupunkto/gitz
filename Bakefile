@@ -4,7 +4,9 @@ use php
 
 export SCAN_PATH="$HOME/downloads/git"
 
-source $(pwd)/.env
+set -a
+source "$(pwd)/.env"
+set +a
 
 PORT=4000
 ENTRYPOINT=dev.php
