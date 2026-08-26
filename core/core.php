@@ -375,7 +375,10 @@ function getDescription($repo) {
   $description = rtrim(@file_get_contents($path));
 
   if($description and $description != DEFAULT_DESCRIPTION) {
-    return ensure_suffix(htmlspecialchars($description), ".");
+    $description = htmlspecialchars($description);
+    $punctuated = preg_match('/(?:[!?]|\p{Extended_Pictographic}[\x{FE0E}\x{FE0F}\p{Emoji_Modifier}]*|\p{Regional_Indicator}{2}|[#*0-9]\x{FE0F}?\x{20E3})$/u', $description);
+
+    return $punctuated ? $description : ensure_suffix($description, ".");
   } else {
     return "<span>No description.</span>";
   }
