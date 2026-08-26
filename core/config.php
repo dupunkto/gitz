@@ -7,7 +7,7 @@ define('MAX_COMMITS', 5);
 define('MAX_REPOS', 7);
 define('UNLISTED', true);
 
-define('SITE_TITLE', getenv("SITE_TITLE") ?: "{du}punkto git hosting");
+define('TITLE', getenv("TITLE") ?: "{du}punkto git hosting");
 
 define('SSH_BASE', getenv("SSH_BASE") ?: "dupunkto.org");
 define('HTTP_BASE', rtrim(getenv("HTTP_BASE") ?: "https://git.dupunkto.org", "/"));

@@ -1,6 +1,6 @@
 <header class="epic">
   <div class="container">
-    <h1><?= SITE_TITLE ?></h1>
+    <h1><?= TITLE ?></h1>
   </div>
 </header>
 
