@@ -47,6 +47,11 @@ switch(true) {
     header("Location: /");
     exit;
 
+  case route("{$ns_pattern}/{$alnum_pattern}\\.git/?$"):
+    http_response_code(301);
+    header("Location: /~{$params[1]}/{$params[2]}");
+    exit;
+
   case scope("{$ns_pattern}/{$alnum_pattern}.git/(.*)"):
     $namespace = $params[1];
     $repo_name = $params[2];
