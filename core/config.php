@@ -12,10 +12,6 @@ define('UNLISTED', true);
 define('TITLE', getenv("TITLE") ?: "{du}punkto git hosting");
 define('CUSTOM_CSS', getenv("CUSTOM_CSS") ?: false);
 
-define('HEADER_TEMPLATE', getenv("HEADER_TEMPLATE") ?: __DIR__ . "/../partials/header.php");
-define('LISTING_TEMPLATE', getenv("LISTING_TEMPLATE") ?: __DIR__ . "/../partials/listing.php");
-define('SUMMARY_TEMPLATE', getenv("SUMMARY_TEMPLATE") ?: __DIR__ . "/../partials/summary.php");
-
 define('LINK_COLOR_LIGHT', getenv("LINK_COLOR_LIGHT") ?: "#6a17e1");
 define('LINK_COLOR_DARK', getenv("LINK_COLOR_DARK") ?: "#c197fc");
 define('LINK_UNDERLINE_LIGHT', getenv("LINK_UNDERLINE_LIGHT") ?: "#6a17e1");

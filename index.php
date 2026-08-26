@@ -157,15 +157,7 @@ if($page == "raw") {
     </style>
   </head>
   <body>
-    <?php if(isset($repo) && $repo != false) include HEADER_TEMPLATE ?>
-    <?php if(isset($page) && $page != false): ?>
-      <?php
-        include match($page) {
-          'listing' => LISTING_TEMPLATE,
-          'summary' => SUMMARY_TEMPLATE,
-          default => __DIR__ . "/partials/$page.php",
-        };
-      ?>
-    <?php endif ?>
+    <?php if(isset($repo) && $repo != false) include __DIR__ . "/partials/header.php" ?>
+    <?php if(isset($page) && $page != false) include __DIR__ . "/partials/$page.php" ?>
   </body>
 </html>
