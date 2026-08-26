@@ -115,7 +115,7 @@ function generateGraph($git, $year, $color, $mode) {
   switch($mode) {
     case 'dark':
       $colorScale = [
-        "#131618",
+        "#121217",
         darken($baseColor, 0.3),
         darken($baseColor, 0.1),
         $baseColor,
