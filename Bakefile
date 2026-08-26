@@ -2,10 +2,12 @@
 
 use php
 
+export SCAN_PATH="$HOME/downloads/git"
+
+source $(pwd)/.env
+
 PORT=4000
 ENTRYPOINT=dev.php
-
-export SCAN_PATH="$HOME/downloads/git"
 
 serve() {
   php -S 0.0.0.0:$PORT $ENTRYPOINT
