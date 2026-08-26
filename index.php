@@ -38,8 +38,9 @@ switch(true) {
     $year = $params[1] ?? date("Y");
     $color = @$_GET['c'] ?? '7426e2';
     $mode = @$_GET['m'] ?? 'light';
+    $author = @$_GET['u'];
 
-    echo \core\generateGraph($git, $year, $color, $mode);
+    echo \core\generateGraph($git, $year, $color, $mode, author: $author);
     exit;
 
   // Redirect bare namespaces to /

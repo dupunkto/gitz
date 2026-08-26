@@ -89,7 +89,7 @@ function serveSmartUploadPack($repo) {
   proc_close($proc);
 }
 
-function generateGraph($git, $year, $color, $mode) {
+function generateGraph($git, $year, $color, $mode, $author = null) {
   $start = strtotime("$year-01-01");
   $end = strtotime("$year-12-31");
   $heatmap = [];
@@ -97,7 +97,16 @@ function generateGraph($git, $year, $color, $mode) {
   foreach(listAllRepositories($git) as $path) {
     $repo = $git->open($path);
 
-    $dates = $repo->execute('log', '--pretty=format:%cd', '--date=short');
+    if($author != null && $author != "") {
+      $entries = $repo->execute('log', '--pretty=format:%cd%x1f%an <%ae>', '--date=short');
+      $dates = array_filter(array_map(function($entry) use ($author) {
+        [$date, $identity] = explode("\x1f", $entry, 2);
+        return stripos($identity, $author) !== false ? $date : null;
+      }, $entries));
+    } else {
+      $dates = $repo->execute('log', '--pretty=format:%cd', '--date=short');
+    }
+
     $timestamps = array_map(fn($date) => strtotime($date), $dates);
     $timestamps = array_filter($timestamps, fn($ts) => $ts >= $start && $ts <= $end);
 
