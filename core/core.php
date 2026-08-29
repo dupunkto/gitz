@@ -403,13 +403,13 @@ function formatSize($bytes) {
   return sprintf($format, $size, $sizes[$factor]);
 }
 
-define('DEFAULT_DESCRIPTION', "Unnamed repository; edit this file 'description' to name the repository.\n");
+define('DEFAULT_DESCRIPTION', "Unnamed repository; edit this file 'description' to name the repository.");
 
 function getDescription($repo) {
   $path = $repo->getRepositoryPath() . "/description";
   $description = rtrim(@file_get_contents($path));
 
-  if($description and $description != DEFAULT_DESCRIPTION) {
+  if($description and trim($description) != DEFAULT_DESCRIPTION) {
     $description = htmlspecialchars($description);
     $punctuated = preg_match('/(?:[!?]|\p{Extended_Pictographic}[\x{FE0E}\x{FE0F}\p{Emoji_Modifier}]*|\p{Regional_Indicator}{2}|[#*0-9]\x{FE0F}?\x{20E3})$/u', $description);
 
