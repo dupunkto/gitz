@@ -40,13 +40,42 @@ class GitImageRenderer implements NodeRendererInterface {
 }
 
 class GitLinkRenderer implements NodeRendererInterface {
-  public function __construct(private string $base) {}
+  public function __construct(private $repo, private $hash, private string $base) {}
+
+  private function resolvePath(string $path): string|false {
+    $resolved = [];
+
+    foreach(explode('/', $path) as $part) {
+      if($part == '' || $part == '.') continue;
+      if($part == '..') {
+        if(!$resolved) return false;
+        array_pop($resolved);
+      } else {
+        $resolved[] = $part;
+      }
+    }
+
+    return implode('/', $resolved);
+  }
 
   public function render(Node $node, ChildNodeRendererInterface $childRenderer): string {
     $href = $node->getUrl();
 
-    if (!is_url($href) && !str_starts_with($href, '/') && !str_starts_with($href, '#') && !str_contains($href, '://')) {
-      $href = rtrim($this->base, '/') . '/' . $href;
+    if(!is_url($href)
+      && !str_starts_with($href, '/')
+      && !str_starts_with($href, '#')
+      && !str_starts_with($href, '?')
+      && !str_contains($href, '://')) {
+      $suffixOffset = strcspn($href, '?#');
+      $path = $this->resolvePath(path_join($this->base, substr($href, 0, $suffixOffset)));
+
+      if($path !== false) {
+        $type = \core\getType($this->repo, rawurldecode($path), $this->hash);
+        $route = in_array($type, ['blob', 'tree']) ? $type : 'tree';
+        $repo_path = ltrim(substr($this->repo->getRepositoryPath(), strlen(SCAN_PATH)), '/');
+        $repo_url = GITZ_URL . '/~' . $repo_path;
+        $href = $repo_url . '/' . $route . '/' . $this->hash . ($path != '' ? '/' . $path : '') . substr($href, $suffixOffset);
+      }
     }
 
     $text = $childRenderer->renderNodes($node->children());
@@ -78,10 +107,7 @@ class Markdown {
     $env->addExtension(new TableExtension());
     $env->addExtension(new TaskListExtension());
     $env->addRenderer(Image::class, new GitImageRenderer($repo, $hash, $base));
-
-    $repo_path = ltrim(substr($repo->getRepositoryPath(), strlen(SCAN_PATH)), '/');
-    $link_base = GITZ_URL . '/~' . $repo_path . '/tree/' . $hash . ($base !== '' ? '/' . $base : '');
-    $env->addRenderer(Link::class, new GitLinkRenderer($link_base));
+    $env->addRenderer(Link::class, new GitLinkRenderer($repo, $hash, $base));
 
     $this->converter = new MarkdownConverter($env);
   }
