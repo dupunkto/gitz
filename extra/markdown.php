@@ -113,7 +113,19 @@ class Markdown {
   }
 
   public function text(string $content): string {
+    $frontMatter = null;
+
+    if(preg_match('/\A---\R(.*?)\R---(?:\R|\z)/s', $content, $matches)) {
+      $frontMatter = $matches[1];
+      $content = substr($content, strlen($matches[0]));
+    }
+
     $html = $this->converter->convert($content)->getContent();
+
+    if($frontMatter !== null) {
+      $html = '<pre><code>' . htmlspecialchars($frontMatter) . '</code></pre>' . "\n" . $html;
+    }
+
     return preg_replace_callback(
       '/(<img\b[^>]*?\bsrc=)(["\'])([^"\']*)\2/i',
       function ($m) {
