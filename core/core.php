@@ -264,6 +264,25 @@ function listRepositories($git, $namespace, $detailed = false) {
     array_map(fn($repo) => $repo['name'], $repositories);
 }
 
+function lastUpdated($git, $namespace) {
+  $scan_path = path_join(SCAN_PATH, $namespace);
+  if (!is_dir($scan_path)) return 0;
+
+  $updated = [0];
+
+  foreach (scandir($scan_path) as $child) {
+    $path = path_join($scan_path, $child);
+    if (in_array($child, [".", ".."]) || !repoExists($path)) continue;
+
+    $repo = $git->open($path);
+    if (repoIsHidden($repo, $path)) continue;
+
+    $updated[] = (int)@$repo->execute('for-each-ref', '--sort=-committerdate', '--count=1', '--format=%(committerdate:unix)')[0];
+  }
+
+  return max($updated);
+}
+
 function repoExists($path) {
   return file_exists(path_join($path, 'git-daemon-export-ok'));
 }

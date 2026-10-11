@@ -28,6 +28,10 @@
 
   $visible_namespaces = array_diff(NAMESPACES, HIDDEN_NAMESPACES);
   $shared_namespaces = array_intersect(SHARED_NAMESPACES, $visible_namespaces);
+
+  // Sort shared namespaces so the newest one is on top.
+  usort($shared_namespaces, fn($a, $b) => \core\lastUpdated($git, $b) <=> \core\lastUpdated($git, $a));
+
   $namespace_columns = $shared_namespaces ? [$shared_namespaces] : [];
 
   foreach(array_diff($visible_namespaces, $shared_namespaces) as $namespace) {
